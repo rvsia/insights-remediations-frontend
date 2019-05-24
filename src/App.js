@@ -8,6 +8,29 @@ import './App.scss';
 // Notifications
 import { NotificationsPortal } from '@redhat-cloud-services/frontend-components-notifications';
 
+import * as Sentry from '@sentry/browser';
+
+function getEnvironment() {
+    const environment = window.location.host.split('.')[0];
+    switch(environment) {
+        case 'ci':
+            return 'CI'
+        case 'qa':
+            return 'QA'
+        case 'cloud':
+            return 'PROD'
+    }
+}
+
+Sentry.init({
+    dsn: "https://80e5a70255df4bd3ba6eb3b4bfebc58c@sentry.io/1466891",
+    environment: getEnvironment(),
+    maxBreadcrumbs: 50,
+    debug: true
+});
+
+Sentry.captureException(new Error("This is my fake error message"));
+
 class App extends Component {
 
     componentDidMount () {

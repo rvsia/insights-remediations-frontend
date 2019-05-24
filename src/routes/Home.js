@@ -15,6 +15,7 @@ import { addNotification } from '@redhat-cloud-services/frontend-components-noti
 import PlanName from '../components/CreatePlanModal/ModalSteps/PlanName';
 import PlanSystems from '../components/CreatePlanModal/ModalSteps/PlanSystems';
 
+import Boundary from '../Boundary';
 import './Home.scss';
 
 const ConnectedRemediationTable = connect(({ remediations }) => ({ ...remediations }))(RemediationTable);
@@ -69,7 +70,7 @@ class Home extends Component {
         ];
 
         return (
-            <React.Fragment>
+            <Boundary>
                 <PageHeader>
                     <PageHeaderTitle title='Remediations'/>
                     <TestButtons onRemediationCreated={ this.onRemediationCreated } />
@@ -86,7 +87,7 @@ class Home extends Component {
                     isOpen= { isModalOpen }
                     content = { ModalStepContent }
                 />
-            </React.Fragment>
+            </Boundary>
         );
     }
 }
