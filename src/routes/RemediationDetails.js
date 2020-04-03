@@ -182,8 +182,7 @@ const RemediationDetails = ({
                                     <SplitItem>
                                         <ExecutePlaybookButton
                                             isDisabled={ !context.isReceptorConfigured }
-                                            remediationId={ remediation.id }
-                                            onPlaybookExecution={ onPlaybookExecution }>
+                                            remediationId={ remediation.id }>
                                         </ExecutePlaybookButton>
                                     </SplitItem>
                                 }

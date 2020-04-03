@@ -152,7 +152,7 @@ const ExecuteButton = ({
                         key="confirm"
                         variant="primary"
                         isDisabled={ connected.length === 0 }
-                        onClick={ () => { runRemediation(remediationId, etag); onPlaybookExecution() } }>
+                        onClick={ () => { runRemediation(remediationId, etag) } }>
                         { isLoading ? 'Execute Playbook' : `Execute Playbook on ${pluralize(connectedCount, 'system')}` }
                     </Button>,
                     <Button
