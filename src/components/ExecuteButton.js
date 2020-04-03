@@ -85,6 +85,7 @@ const styledConnectionStatus = (status) => ({
 
 const ExecuteButton = ({
     isLoading,
+    isDisabled,
     data,
     getConnectionStatus,
     remediationId,
@@ -92,6 +93,7 @@ const ExecuteButton = ({
     runRemediation,
     etag,
     remediationStatus,
+    onPlaybookExecution,
     setEtag }) => {
     const [ open, setOpen ] = useState(false);
     const [ isUserEntitled, setIsUserEntitled ] = useState(false);
@@ -131,6 +133,7 @@ const ExecuteButton = ({
     return (isUserEntitled && isEnabled()
         ? <React.Fragment>
             <Button
+                isDisabled={ isDisabled }
                 onClick={ () => { setOpen(true); getConnectionStatus(remediationId); } }>
         Execute Playbook
             </Button>
@@ -149,7 +152,7 @@ const ExecuteButton = ({
                         key="confirm"
                         variant="primary"
                         isDisabled={ connected.length === 0 }
-                        onClick={ () => { runRemediation(remediationId, etag); } }>
+                        onClick={ () => { runRemediation(remediationId, etag); onPlaybookExecution() } }>
                         { isLoading ? 'Execute Playbook' : `Execute Playbook on ${pluralize(connectedCount, 'system')}` }
                     </Button>,
                     <Button
@@ -218,11 +221,14 @@ ExecuteButton.propTypes = {
     remediationStatus: PropTypes.string,
     issueCount: PropTypes.number,
     etag: PropTypes.string,
-    setEtag: PropTypes.func
+    setEtag: PropTypes.func,
+    isDisabled: PropTypes.bool,
+    onPlaybookExecution: PropTypes.func
 };
 
 ExecuteButton.defaultProps = {
-    data: []
+    data: [],
+    isDisabled: false
 };
 
 export default ExecuteButton;

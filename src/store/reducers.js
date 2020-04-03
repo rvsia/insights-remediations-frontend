@@ -147,7 +147,7 @@ const reducers = {
         status: 'initial'
     }),
 
-    inventoryEntitiesReducer: (props) => () => applyReducerHash({
+    inventoryEntitiesReducer: (props = { INVENTORY_ACTION_TYPES: {}}) => () => applyReducerHash({
         [props.INVENTORY_ACTION_TYPES.LOAD_ENTITIES_FULFILLED]: (state) => {
             return {
                 ...state,
@@ -158,6 +158,58 @@ const reducers = {
                 ]
             };
         }
+    }),
+
+    playbookActivityIntentory: (props) => () => applyReducerHash({
+        [props.INVENTORY_ACTION_TYPES.LOAD_ENTITIES_FULFILLED]: (state) => {
+            return {
+                ...state,
+                columns: [
+                    ...state.columns.filter(col => col.key === 'display_name' || col.key === 'tags'),
+                    { key: 'status', title: 'Status',
+                        renderFunc: (status) => props.renderStatus(status) } // TODO remove id
+                ]
+
+            };
+        },
+        [ACTION_TYPES.EXPAND_INVENTORY_TABLE]: (state, action) => {
+            return {
+                ...state,
+                rows: [ ...state.rows.filter(row => row.id !== action.payload.id),
+                    { ...state.rows.find(row => row.id === action.payload.id), isOpen: action.payload.isOpen
+                    }
+                ]
+            };}
+    }),
+
+    playbookRuns: applyReducerHash({
+        [ACTION_TYPES.GET_PLAYBOOK_RUNS_FULFILLED]: (state, action) => ({
+            data: action.payload.data,
+            meta: action.payload.meta
+        })
+
+    }),
+
+    playbookRun: applyReducerHash({
+        [ACTION_TYPES.GET_PLAYBOOK_RUN_FULFILLED]: (state, action) => ({
+            data: action.payload
+        })
+
+    }),
+
+    playbookRunSystems: applyReducerHash({
+        [ACTION_TYPES.GET_PLAYBOOK_RUN_SYSTEMS_FULFILLED]: (state, action) => ({
+            ...action.payload
+        })
+    }, {
+        data: [],
+        meta: {}
+    }),
+
+    playbookRunSystemDetails: applyReducerHash({
+        [ACTION_TYPES.GET_PLAYBOOK_RUN_SYSTEM_DETAILS_FULFILLED]: (state, action) => ({
+            ...action.payload
+        })
     }),
 
     runRemediation: applyReducerHash({
