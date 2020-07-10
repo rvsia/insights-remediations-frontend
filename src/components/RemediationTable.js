@@ -14,6 +14,7 @@ import { sortable, Table, TableHeader, TableBody, TableVariant } from '@patternf
 import { EmptyTable, SimpleTableFilter, Skeleton, TableToolbar, DateFormat } from '@redhat-cloud-services/frontend-components';
 import { PrimaryToolbar } from '@redhat-cloud-services/frontend-components/components/PrimaryToolbar';
 import { WrenchIcon } from '@patternfly/react-icons';
+import { ExecuteRemediationActionButton } from '../containers/ExecuteButtons';
 
 import { appUrl } from '../Utilities/urls';
 import './RemediationTable.scss';
@@ -148,7 +149,14 @@ function RemediationTable (props) {
     const selectedIds = selector.getSelectedIds();
 
     const actionResolver = (rowData, { rowIndex }) => {
+        const current = value.data[rowIndex];
+
         return [
+            {
+                title: <ExecuteRemediationActionButton
+                    remediationId={ current.id }
+                    isDisabled={ false }/>
+            },
             {
                 title: 'Download playbook',
                 onClick: () => downloadPlaybook(rowData.id)
