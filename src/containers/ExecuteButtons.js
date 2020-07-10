@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback } from 'react';
+import React, { useState, useRef, useCallback, useEffect } from 'react';
 import { connect, useDispatch, useSelector } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
@@ -33,13 +33,17 @@ export const ExecutePlaybookButton = withRouter(connect(
 
 export const ExecuteRemediationActionButton = ( {remediationId, isDisabled} ) => {
 
-    //loadRemediation(remediationId);
+    const [ ready, setReady ] = useState(false);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        console.log('USE EFFECT: ', remediationId);
+        dispatch(loadRemediation(remediationId)).then(() => dispatch(getConnectionStatus(remediationId))).then(() => setReady(true));
+    }, []);
 
     const selected = useSelector(state => state.selectedRemediation);
     const connStatus = useSelector(state => state.connectionStatus);
     const runRem = useSelector(state => state.runRemediation);
-
-    const dispatch = useDispatch();
 
     console.log('selectedddd: ', selected);
 
@@ -57,7 +61,7 @@ export const ExecuteRemediationActionButton = ( {remediationId, isDisabled} ) =>
     }
 
     return (
-        <ExecuteButton
+        ready && <ExecuteButton
             remediationId = { remediationId }
             isDisabled = { isDisabled }
             data = { connStatus.data }

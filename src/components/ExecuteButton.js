@@ -99,6 +99,16 @@ const ExecuteButton = ({
     etag,
     remediationStatus,
     setEtag }) => {
+        console.log('isLoading', isLoading,
+        'isDisabled', isDisabled,
+        'data', data,
+        'getConnectionStatus', getConnectionStatus,
+        'remediationId', remediationId,
+        'issueCount', issueCount,
+        'runRemediation', runRemediation,
+        'etag', etag,
+        'remediationStatus', remediationStatus,
+        'setEtag', setEtag);
     const [ open, setOpen ] = useState(false);
     const [ isUserEntitled, setIsUserEntitled ] = useState(false);
     const [ showRefreshMessage, setShowRefreshMessage ] = useState(false);
@@ -145,7 +155,7 @@ const ExecuteButton = ({
         ? <React.Fragment>
             <Button
                 isDisabled={ isDisabled }
-                onClick={ () => { setOpen(true); getConnectionStatus(remediationId); } }>
+                onClick={ () => { setOpen(true); console.log('ONCLICK: ', open); getConnectionStatus(remediationId); } }>
         Execute playbook
             </Button>
             <Modal
@@ -154,6 +164,7 @@ const ExecuteButton = ({
                 title={ 'Execute playbook' }
                 isOpen={ open }
                 onClose={ () => {
+                    console.log('CLOSING MODAL');
                     setShowRefreshMessage(false);
                     setOpen(false);
                 } }
