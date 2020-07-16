@@ -1,0 +1,37 @@
+@import "~@patternfly/patternfly/patternfly.css";
+@import "~@patternfly/react-core/dist/styles/base.css";
+
+.ins-c-logger {
+
+    // Try to copy this naming
+    --ins-c-logger--BackgroundColor: var(--pf-global--BackgroundColor--100);
+    --ins-c-logger--BorderColor: var(--pf-global--palette--black-100);
+
+    // TODO update all of these
+    --ins-global-spacer: var(--pf-global--spacer--lg);
+    --logger-border-color: var(--pf-global--palette--black-200);
+
+    --ins-pinned-row-color: var(--pf-global--palette--gold-50);
+    --ins-action-row-color: var(--pf-global--palette--white);
+    --index-column-background-color: var(--pf-global--palette--black-300);
+    --index-font-color: var(--pf-global--Color--200);
+    --data-font-color: var(--pf-global--Color--100);
+    --logger-root-font-color: white;
+    --logger-root-font-color-dark: black; 
+    --sm-font-size: var(--pf-global--FontSize--sm);
+    --md-font-size: var(--pf-global--FontSize--md);
+    --logger-root-background-color: var(--pf-global--palette--black-100);
+    --hover-row-color: var(--pf-global--palette--blue-50);
+    --active-row-color: var(--pf-global--active-color--200);
+
+    --logger-background-color: var(--pf-global--palette--black-150);
+
+    --index-border-color: var(--pf-global--palette--black-200);
+    --index-background-color: var(--pf-global--BackgroundColor--100);
+
+    --ins-toolbar-background-color: var(--pf-global--palette--black-300);
+    --ins-toolbar-border-color: var(--pf-global--palette--black-200);
+    --ins-toolbar-color: var(--pf-global--palette--black-100);
+    --ins--toolbar-icon-action-color: var(--pf-global--info-color--200);
+    --ins--toolbar-font-action-color: var(--pf-global--BackgroundColor--100);
+}

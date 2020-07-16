@@ -21,7 +21,11 @@
     "create-react-class": "^15.6.3",
     "react-hooks-testing-library": "^0.3.8",
     "react-syntax-highlighter": "12.2.1",
-    "urijs": "^1.19.2"
+    "urijs": "^1.19.2",
+    "react-virtualized-auto-sizer": "^1.0.2",
+    "react-window": "^1.8.5",
+    "react-window-infinite-loader": "^1.0.5",
+    "yaml": "^1.10.0"
   },
   "sassIncludes": {
     "patternfly": "node_modules/patternfly/dist/sass",
