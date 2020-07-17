@@ -29,17 +29,17 @@ const PlaybookSystemDetails = ({ systemId, playbookRunSystemDetails }) => {
         <Title headingLevel="h4" size="xl" className='ins-c-job-output__title'>Consola</Title>
         { systemId && systemId === playbookRunSystemDetails.system_id ?
             <React.Fragment>
-                <SyntaxHighlighter
+                {/* <SyntaxHighlighter
                     language="yaml"
                     showLineNumbers
                     style={ docco }
                     className={ outputClasses }>
                     { playbookRunSystemDetails && playbookRunSystemDetails.console || '' }
-                </SyntaxHighlighter>
-                {/* <Logger
+                </SyntaxHighlighter> */}
+                <Logger
                     logTitle='Playbook Console Data' 
                     data={playbookRunSystemDetails}
-                /> */}
+                />
                 { playbookRunSystemDetails.status === 'running' &&
                     <div className='ins-l-playbook-running'>
                         <Spinner size='lg' aria-valuetext='playbook in progress' className='ins-c-spinner__playbook-running'/>

@@ -1,12 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import { Button, Level, LevelItem } from '@patternfly/react-core';
+import { LoggerHeader } from './loggerHeader';
 
 import { AngleLeftIcon, AngleRightIcon, AngleDownIcon, AngleUpIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, SearchIcon } from '@patternfly/react-icons';
 import classNames from 'classnames';
 import './styles/loggerToolbar.styles.scss';
 
 
-const LoggerToolbar = ({searchedWordIndexes, itemCount, scrollToRow, rowInFocus, setRowInFocus}) => {
+const LoggerToolbar = ({searchedWordIndexes, itemCount, scrollToRow, rowInFocus, setRowInFocus, setSearchedInput, searchForKeyword, searchedInput}) => {
     // const []
     let searchInput = '';
 
@@ -33,6 +34,7 @@ const LoggerToolbar = ({searchedWordIndexes, itemCount, scrollToRow, rowInFocus,
         if(oldIndex >= searchedWordIndexes.length-1)
             return null;
         
+        console.log('Hit next: ', oldIndex);
         setRowInFocus(searchedWordIndexes[++oldIndex]);        
     }
 
@@ -51,8 +53,8 @@ const LoggerToolbar = ({searchedWordIndexes, itemCount, scrollToRow, rowInFocus,
             return(
                 <>
                     {/* <span className='toolbar__label toolbar--left-hand'>Searching: {`${searchInput}`} </span> */}
-                    <Button variant='plain' aria-label='Look up' className='toolbar__icons'><AngleLeftIcon id='lookUp'  onClick={handlePrevSearchItem}/></Button>
-                    <Button variant='plain' aria-label='Look down' className='toolbar__icons'><AngleRightIcon id='lookDown' onClick={handleNextSearchItem}/></Button>
+                    <Button variant='plain' aria-label='Look up' className='toolbar__icons' onClick={handlePrevSearchItem}><AngleLeftIcon id='lookUp'/></Button>
+                    <Button variant='plain' aria-label='Look down' className='toolbar__icons'  onClick={handleNextSearchItem}><AngleRightIcon id='lookDown'/></Button>
                 </>
             );
         }
@@ -62,6 +64,13 @@ const LoggerToolbar = ({searchedWordIndexes, itemCount, scrollToRow, rowInFocus,
     // The lookUp/lookDown arrows need to be conditionally rendered depending on whether logger includes a searchbar or not
     return(
         <Level className='logger__toolbar'>
+            <LevelItem>
+                <LoggerHeader 
+                    setSearchedInput={setSearchedInput}
+                    searchForKeyword={searchForKeyword}
+                    searchedInput={searchedInput}    
+                />
+            </LevelItem>
             <LevelItem>
                 {renderSearchButtons()}
             </LevelItem>

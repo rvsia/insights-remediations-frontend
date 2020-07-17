@@ -16,7 +16,7 @@ import './styles/styles.css';
 
 // To be moved as a helper function to mlParser
 const cleanUpStringArray = (data) => { // Needs refactoring and refinement *later*
-    const cleaninRegEx = new RegExp('(\s+\\+[a-zA-Z])|"|(\n\s)');
+    // const cleaninRegEx = new RegExp('(\s+\\+[a-zA-Z])|"|(\n\s)');
     let cleanArray = [];
     let s = "";
     let spaceCounter = 0;
@@ -67,9 +67,16 @@ const Logger = memo(({logTitle, includesToolbar, includesLoadingStatus ,data, is
     const dataToRender = createLoggerDataItem(parsedData, searchedInput, loggerRef, rowInFocus, setRowInFocus, highlightedRowIndexes, setHighlightedRowIndexes, searchedWordIndexes); 
 
 
+    // useEffect(() => {
+    //     isPayloadConsole 
+    //         ? setParsedData(parseConsoleOutput(data.message.payload.console))
+    //         : setParsedData('');  // We would substitute parseConsoleOutput with something that would parse the correct thing(whatever that is)
+    // }, []); // This is for a naked version of the payload, need to refactor to grab both types. 
+
+    
     useEffect(() => {
         isPayloadConsole 
-            ? setParsedData(parseConsoleOutput(data.message.payload.console))
+            ? setParsedData(parseConsoleOutput(data.console))
             : setParsedData('');  // We would substitute parseConsoleOutput with something that would parse the correct thing(whatever that is)
     }, []);
 
@@ -82,6 +89,7 @@ const Logger = memo(({logTitle, includesToolbar, includesLoadingStatus ,data, is
 
 
     useEffect(() => {
+        console.log('This is our rowInFocus: ', rowInFocus)
         scrollToRow(rowInFocus);
     }, [rowInFocus]);
 
@@ -116,8 +124,13 @@ const Logger = memo(({logTitle, includesToolbar, includesLoadingStatus ,data, is
     }
 
 
+    const nextSearchedIndex = () => {
+        // useEffect(searchNextItem)
+    }
+
+
     const scrollToRow = (searchedRowIndex) => {
-        setRowInFocus(searchedRowIndex);
+        // setRowInFocus(searchedRowIndex);
         loggerRef.current.scrollToItem({
             align:'center',
             columnIndex:1,
@@ -147,14 +160,7 @@ const Logger = memo(({logTitle, includesToolbar, includesLoadingStatus ,data, is
     return(
         <>
           <div className='ins-c-logger' hasGutter>
-              <div className='logger__header'>
-                  <LoggerHeader 
-                      searchedInput={searchedInput}
-                      setSearchedInput={setSearchedInput}
-                      searchForKeyword={searchForKeyword}
-                  />
-              </div>
-              <LoggerToolbar 
+                <LoggerToolbar 
                   rowInFocus={rowInFocus}
                   setRowInFocus={setRowInFocus}
                   scrollToRow={scrollToRow}
@@ -163,6 +169,9 @@ const Logger = memo(({logTitle, includesToolbar, includesLoadingStatus ,data, is
                   searchedWordIndexes={searchedWordIndexes}
                   itemsPerPage={calculateItemsPerPage}
                   nextSearchedIndex={nextSearchedIndex}
+                  searchedInput={searchedInput}
+                  setSearchedInput={setSearchedInput}
+                  searchForKeyword={searchForKeyword}
               />
               <Grid 
                   className='logger__grid'
