@@ -1,5 +1,6 @@
 import React, {useEffect, useState, memo, useRef} from 'react';
-import { VariableSizeGrid as Grid, areEqual } from 'react-window'; 
+// import { VariableSizeGrid as Grid, areEqual } from 'react-window'; 
+import { VariableSizeList as List, areEqual } from 'react-window'; 
 import LoggerRow from './loggerRow';
 import LoggerToolbar from './loggerToolbar';
 import LoggerHeader from './loggerHeader';
@@ -20,6 +21,7 @@ const cleanUpStringArray = (data) => { // Needs refactoring and refinement *late
     let cleanArray = [];
     let s = "";
     let spaceCounter = 0;
+    console.log('This is our split: ', data);
 
     // for (s of data){
     //     if(!cleaninRegEx.test(s)){
@@ -36,9 +38,19 @@ const cleanUpStringArray = (data) => { // Needs refactoring and refinement *late
 
 // To be moved as a helper function to mlParser
 const parseConsoleOutput = (data) => {
-    const stringToSplitWith = "\n";
+    const stringToSplitWith1 = "\n";
+    const stringToSplitWith = '\n';
     const stringifiedData = YAML.stringify(data);
+    console.log('This is our stringified data: ', stringifiedData);
+    
     const cleanString = stringifiedData.split(stringToSplitWith);
+    console.log('this is our cleaned data: ', cleanString);   
+
+    const cleanString1 = stringifiedData.split(stringToSplitWith1);
+    
+    console.log('this is our clean1: ', cleanString1);
+
+    console.log('This is our raw data: ', data);
     
     return cleanUpStringArray(cleanString);
 }
@@ -56,12 +68,12 @@ const createLoggerDataItem = memoize((parsedData, searchedInput, loggerRef, rowI
 }));
 
 
-// Need to finish cleaning up/refactoring some redundancies in the code here
-const Logger = memo(({logTitle, includesToolbar, includesLoadingStatus ,data, isPayloadConsole, searchedKeyword}) => { 
+// Remember to change to only expecting the exact yaml part that we'll be parsing out, rather than looking for it through this component. We need to slim down the logic. 
+const Logger = memo(({hasSearchbar, includesLoadingStatus, path ,data, isPayloadConsole, searchedKeyword}) => { 
     const [parsedData, setParsedData] = useState([]);
     const [searchedInput, setSearchedInput] = useState('');
     const [searchedWordIndexes, setSearchedWordIndexes] = useState([]); 
-    const [highlightedRowIndexes, setHighlightedRowIndexes] = useState([]); // Pending refactoring of useState to just grabbing a whole object for all indexes 
+    const [highlightedRowIndexes, setHighlightedRowIndexes] = useState([]); 
     const [rowInFocus, setRowInFocus] = useState('');
     const loggerRef = React.useRef();
     const dataToRender = createLoggerDataItem(parsedData, searchedInput, loggerRef, rowInFocus, setRowInFocus, highlightedRowIndexes, setHighlightedRowIndexes, searchedWordIndexes); 
@@ -69,11 +81,11 @@ const Logger = memo(({logTitle, includesToolbar, includesLoadingStatus ,data, is
 
     useEffect(() => {
         isPayloadConsole 
-            ? setParsedData(parseConsoleOutput(data.message.payload.console))
+            ? setParsedData(parseConsoleOutput(data.console)) // instead of looking for what to parse, it should expect the 'message' to be parsed directly. Add this to the docs(when you make one)
             : setParsedData('');  // We would substitute parseConsoleOutput with something that would parse the correct thing(whatever that is)
     }, []);
 
-
+    
     useEffect(() => {
         if(searchedWordIndexes.length !== 0)
             scrollToRow(searchedWordIndexes[0]);
@@ -111,29 +123,17 @@ const Logger = memo(({logTitle, includesToolbar, includesLoadingStatus ,data, is
         setSearchedWordIndexes(searchedWordIndexes => [...searchResults]); // gonna need a way for the user to clear these
     }
 
+
     const calculateItemsPerPage = () => {
         return Math.round(LOGGER_HEIGHT / LOGGER_ROW_HEIGHT); // This will have to change with collapsible rows
     }
 
 
     const scrollToRow = (searchedRowIndex) => {
-        setRowInFocus(searchedRowIndex);
-        loggerRef.current.scrollToItem({
-            align:'center',
-            columnIndex:1,
-            rowIndex:searchedRowIndex
-        })
-        
+        setRowInFocus(searchedRowIndex);     
+        loggerRef.current.scrollToItem(searchedRowIndex, 'center');
+
         return true; 
-    }
-
-
-    const setColumnWidth = (index) => {
-        return index == 0 
-            ?   LOGGER_INDEX_COLUMN_WIDTH 
-            :   index == 2
-                ?   LOGGER_STAMP_COLUMN_WIDTH
-                :   LOGGER_DATA_COLUMN_WIDTH;
     }
 
     
@@ -147,13 +147,6 @@ const Logger = memo(({logTitle, includesToolbar, includesLoadingStatus ,data, is
     return(
         <>
           <div className='ins-c-logger' hasGutter>
-              <div className='logger__header'>
-                  <LoggerHeader 
-                      searchedInput={searchedInput}
-                      setSearchedInput={setSearchedInput}
-                      searchForKeyword={searchForKeyword}
-                  />
-              </div>
               <LoggerToolbar 
                   rowInFocus={rowInFocus}
                   setRowInFocus={setRowInFocus}
@@ -162,13 +155,14 @@ const Logger = memo(({logTitle, includesToolbar, includesLoadingStatus ,data, is
                   itemCount={parsedData.length}
                   searchedWordIndexes={searchedWordIndexes}
                   itemsPerPage={calculateItemsPerPage}
-                  nextSearchedIndex={nextSearchedIndex}
-              />
-              <Grid 
+                  hasSearchbar={hasSearchbar}
+                  searchedInput={searchedInput}
+                  setSearchedInput={setSearchedInput}
+                  searchForKeyword={searchForKeyword}
+                />
+              <List 
                   className='logger__grid'
                   rowCount={parsedData.length}
-                  columnCount={LOGGER_COLUMNS_AMOUNT}
-                  columnWidth={index => setColumnWidth(index)}
                   rowHeight={index => setRowHeight(index)}
                   height={LOGGER_HEIGHT}
                   width={LOGGER_WIDTH}
@@ -178,7 +172,7 @@ const Logger = memo(({logTitle, includesToolbar, includesLoadingStatus ,data, is
                   ref={loggerRef}
               >
                 {LoggerRow}
-              </Grid>
+              </List>
           </div>
         </>
     );
@@ -187,9 +181,10 @@ const Logger = memo(({logTitle, includesToolbar, includesLoadingStatus ,data, is
 
 Logger.defaultProps =  {
     isPayloadConsole: true,
-    includesToolbar: true,
+    hasSearchbar: true,
     includesLoadingStatus: true,
-    searchedKeyword: ''
+    searchedKeyword: '', 
+    path: '.console'
 };
 
 export default Logger;

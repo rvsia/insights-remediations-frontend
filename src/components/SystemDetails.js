@@ -26,20 +26,14 @@ const PlaybookSystemDetails = ({ systemId, playbookRunSystemDetails }) => {
     console.log('This is my playbook details: ',playbookRunSystemDetails);
 
     return <React.Fragment>
-        <Title headingLevel="h4" size="xl" className='ins-c-job-output__title'>Consola</Title>
+        <Title headingLevel="h4" size="xl" className='ins-c-job-output__title'>Playbook Log</Title>
         { systemId && systemId === playbookRunSystemDetails.system_id ?
             <React.Fragment>
-                <SyntaxHighlighter
-                    language="yaml"
-                    showLineNumbers
-                    style={ docco }
-                    className={ outputClasses }>
-                    { playbookRunSystemDetails && playbookRunSystemDetails.console || '' }
-                </SyntaxHighlighter>
-                {/* <Logger
+                <Logger
                     logTitle='Playbook Console Data' 
                     data={playbookRunSystemDetails}
-                /> */}
+                    // path={'.console'} // idea is to have the user point to the data that they want to output(changes between ansible/remediations)
+                />
                 { playbookRunSystemDetails.status === 'running' &&
                     <div className='ins-l-playbook-running'>
                         <Spinner size='lg' aria-valuetext='playbook in progress' className='ins-c-spinner__playbook-running'/>

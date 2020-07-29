@@ -1,17 +1,16 @@
 .ins-logger-cell {
-    background: var(--logger-background-color);
+    background: var(--ins-c-logger--background-color);
     display: flex;
     align-items: center; // center everything vertically
 
     &.cell__data-column {
-        // background: var(--logger-root-background-color);
-        font-size: var(--md-font-size);
+        font-size: var(--ins-c-logger--md-font-size);
+        width: var(--ins-c-logger--row-data-width);
         padding-left: 16px;
         &:hover {
-            background: var(--hover-row-color);
+            background: var(--ins-c-logger--hover-row-color);
             cursor: pointer; // show the user they can click it
-            // font-size: 105%; We don't want to change the font-size for this. Background should be enough
-            & + .cell__stamp-column { background: var(--hover-row-color) }
+            & + .cell__stamp-column { background: var(--ins-c-logger--hover-row-color) }
         }
         &.cell--inFocus, &.cell--inFocus + .cell__stamp-column {
             background: var(--pf-global--palette--light-green-100);
@@ -19,13 +18,16 @@
     }
     &.cell__index-column {
         background: var(--data-column-background-color);
-        justify-content: center;  // center the row numbers
-        color: var(--index-font-color);
-        border-right: 1px solid var(--index-border-color);
+        justify-content: center;  
+        color: var(--ins-c-logger--index-font-color);
+        border-right: 1px solid var(--ins-c-logger--index-BorderColor);
+        border-left: 1px solid var(--ins-c-logger--index-BorderColor);
+        width: var(--ins-c-logger--row-index-width);
+        // border-bottom: 1px solid var(--ins-c-logger--index-BorderColor);;
     }
 
     &.cell__data-column.cell--highlighted,  &.cell__data-column.cell--highlighted + .cell__stamp-column {
-        background: var(--active-row-color) ;
+        background: var(--ins-c-logger--ins-c-logger--active-row-color) ;
     }
 }
 

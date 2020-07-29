@@ -1,30 +1,45 @@
-import React, {useState, useEffect} from 'react';
-import { Button, Level, LevelItem } from '@patternfly/react-core';
-
-import { AngleLeftIcon, AngleRightIcon, AngleDownIcon, AngleUpIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, SearchIcon } from '@patternfly/react-icons';
+import React, {useState} from 'react';
+import { Button, Level, LevelItem, TextInput} from '@patternfly/react-core';
+import { AngleLeftIcon, AngleRightIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, SearchIcon } from '@patternfly/react-icons';
 import classNames from 'classnames';
 import './styles/loggerToolbar.styles.scss';
+import { NavigationFullscreen } from 'material-ui/svg-icons';
 
 
-const LoggerToolbar = ({searchedWordIndexes, itemCount, scrollToRow, rowInFocus, setRowInFocus}) => {
-    // const []
-    let searchInput = '';
+const LoggerToolbar = ({searchedWordIndexes, itemCount, scrollToRow, loggerRef, rowInFocus, setRowInFocus, hasSearchbar, setSearchedInput, searchedInput, searchForKeyword}) => {
+    const [userInput, setUserInput] = useState('');
+    const disablingFlag = searchedInput == '' ? true : false;
+    let value = userInput;
 
 
     const handlePageDown = () => {
+        // loggerRef.current.scrollToItem({
+        //     align:'center',
+        //     columnIndex:1,
+        //     rowIndex:itemCount
+        // })
+
         scrollToRow(itemCount);
     }
 
     const handlePageUp = () => {
+        // loggerRef.current.scrollToItem({
+        //     align:'center',
+        //     columnIndex:1,
+        //     rowIndex:0
+        // })
+
         scrollToRow(0);
     }
 
-    const handleSkipUp = () => {
-
+    const handleChange = (value) => {
+        setUserInput(value);
+        setSearchedInput(value.toLowerCase());
     }
 
-    const handleSkipDown = () => {
-
+    const handleSubmit = () => {
+        searchForKeyword();
+        handleChange('');
     }
 
     const handleNextSearchItem = () => {
@@ -46,28 +61,50 @@ const LoggerToolbar = ({searchedWordIndexes, itemCount, scrollToRow, rowInFocus,
     }
 
 
+    const renderSearchBar = () => {
+        if(!hasSearchbar)
+            return null;
+
+        return(
+            <>
+                <TextInput 
+                    type='text' 
+                    value={value} 
+                    aria-label='logger keyword search bar'
+                    onChange={handleChange} 
+                    className='toolbar__searchbar'    
+                />
+                <Button
+                    onClick={handleSubmit}
+                    className='searchbar__btn'
+                    variant='control'
+                    isDisabled={disablingFlag}
+                >
+                    <SearchIcon />
+                </Button>
+            </>
+        );
+    }   
+
+
     const renderSearchButtons = () => {
         if(searchedWordIndexes.length >= 2) {
             return(
                 <>
-                    {/* <span className='toolbar__label toolbar--left-hand'>Searching: {`${searchInput}`} </span> */}
-                    <Button variant='plain' aria-label='Look up' className='toolbar__icons'><AngleLeftIcon id='lookUp'  onClick={handlePrevSearchItem}/></Button>
-                    <Button variant='plain' aria-label='Look down' className='toolbar__icons'><AngleRightIcon id='lookDown' onClick={handleNextSearchItem}/></Button>
+                    <Button variant='plain' aria-label='Look up' className='toolbar__icons' onClick={handlePrevSearchItem}><AngleLeftIcon id='lookUp'/></Button>
+                    <Button variant='plain' aria-label='Look down' className='toolbar__icons' onClick={handleNextSearchItem}><AngleRightIcon id='lookDown'/></Button>
                 </>
             );
         }
     }
 
-    // The span needs to appear and dissapear depending on whether the logger includes a searchbar or not
-    // The lookUp/lookDown arrows need to be conditionally rendered depending on whether logger includes a searchbar or not
     return(
         <Level className='logger__toolbar'>
             <LevelItem>
-                {renderSearchButtons()}
+                {renderSearchBar()}
             </LevelItem>
             <LevelItem>
-                <Button variant='plain' aria-label='Skip up' className='toolbar__icons'><AngleUpIcon id='skipUp'/></Button>
-                <Button variant='plain' aria-label='Skip down' className='toolbar__icons'><AngleDownIcon id='skipDown'/></Button>
+                {renderSearchButtons()}
                 <Button variant='plain' aria-label='Page up' className='toolbar__icons' onClick={handlePageUp}><AngleDoubleUpIcon id='pageUp'/></Button>
                 <Button variant='plain' aria-label='Page down' className='toolbar__icons' onClick={handlePageDown}><AngleDoubleDownIcon id='skipDown'/></Button>
             </LevelItem>

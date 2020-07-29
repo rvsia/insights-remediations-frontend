@@ -1,15 +1,31 @@
 // don't use floats, they're old. We have Flex now which solves everything float wanted to be
 .logger__toolbar{
-    border: 1px solid var(--ins-toolbar-border-color);
+    border: 1px solid var(--ins-c-logger--toolbar-BorderColor);
+    border-bottom: 0px;
+
+    &.toolbar--hasSearchbar {
+        height: 200px;
+    }
+
+    &.toolbar__icons {
+        padding: 6px 16px !important; // this !important will go away when we put it in app
+    }
+      
 }
 
-// we're using PF's button now
-.toolbar__icons {
-    padding: 6px 16px !important; // this !important will go away when we put it in app
+.toolbar__searchbar {
+    margin-left: 47px; 
+    padding-top: 7px;
+    border-bottom: 4px solid var(--ins-c-logger--border-color);  
+    width: 250px;
+    height: 40px;
 }
 
-.toolbar--text-input {
-    background-color: green;
-    margin-right: 500px;
-    width: 3000px;
-}
+
+.searchbar__btn {
+    width: 44px;
+    height: 36px;
+} 
+
+
+
