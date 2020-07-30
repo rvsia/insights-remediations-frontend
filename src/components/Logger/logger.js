@@ -1,15 +1,12 @@
 import React, {useEffect, useState, memo, useRef} from 'react';
-// import { VariableSizeGrid as Grid, areEqual } from 'react-window'; 
 import { VariableSizeList as List, areEqual } from 'react-window'; 
 import LoggerRow from './loggerRow';
 import LoggerToolbar from './loggerToolbar';
 import LoggerHeader from './loggerHeader';
 import memoize from 'memoize-one';
-import {LOGGER_COLUMNS_AMOUNT, LOGGER_INDEX_COLUMN_WIDTH, LOGGER_DATA_COLUMN_WIDTH, LOGGER_ROW_HEIGHT, LOGGER_STAMP_COLUMN_WIDTH, LOGGER_HEIGHT, LOGGER_WIDTH} from './utils/constants';
+import {LOGGER_ROW_HEIGHT, LOGGER_HEIGHT, LOGGER_WIDTH} from './utils/constants';
 import MLParser from './mlParser';
 import YAML from 'yaml';
-
-// change how the CSS is loaded. We only need to load the base stuff once.
 import './styles/base.scss';
 import './styles/logger.styles.scss';
 import './styles/styles.css';
@@ -85,7 +82,7 @@ const Logger = memo(({hasSearchbar, includesLoadingStatus, path ,data, isPayload
             : setParsedData('');  // We would substitute parseConsoleOutput with something that would parse the correct thing(whatever that is)
     }, []);
 
-    
+
     useEffect(() => {
         if(searchedWordIndexes.length !== 0)
             scrollToRow(searchedWordIndexes[0]);
@@ -162,11 +159,10 @@ const Logger = memo(({hasSearchbar, includesLoadingStatus, path ,data, isPayload
                 />
               <List 
                   className='logger__grid'
-                  rowCount={parsedData.length}
                   rowHeight={index => setRowHeight(index)}
                   height={LOGGER_HEIGHT}
                   width={LOGGER_WIDTH}
-                  itemSize={30}
+                  itemSize={() => 30}
                   itemCount={parsedData.length}
                   itemData={dataToRender}
                   ref={loggerRef}

@@ -15,14 +15,17 @@ const LoggerRow = memo(({columnIndex, rowIndex, style, data}) => {
         loggerRef.current.scrollToItem(searchedIndex);
     }
 
+
     const getData = (colIndex, rowIndex) => {
        return colIndex == LOGGER_DATA_COLUMN_ID ? parsedData[rowIndex]
             : (colIndex == LOGGER_INDEX_COLUMN_ID) ? (rowIndex + LOGGER_LINE_NUMBER_INDEX_DELTA)
             : '' ;// this would eventually be replaced with time stamp data    
     } 
 
+
     const getDataR = (rowIndex) => {
-        parsedData[rowIndex]; // Can use this function to later add wrapping for syntax highlighting (basic)
+        console.log('We are calling our data: ', parsedData[rowIndex]);
+        return parsedData[rowIndex]; // Can use this function to later add wrapping for syntax highlighting (basic)
     }
 
 
@@ -35,9 +38,11 @@ const LoggerRow = memo(({columnIndex, rowIndex, style, data}) => {
         isHiglighted ? setIsHiglighted(false) : setIsHiglighted(true);
     }
 
+
     const highlightText = () => {
         console.log('Second test completed!!!');
     }
+
 
     const handleMouseFocusEnter = () => {
         if(rowInFocus !== rowIndex)
@@ -45,28 +50,24 @@ const LoggerRow = memo(({columnIndex, rowIndex, style, data}) => {
 
         setRowSeen(true);
     }
+    // const cellClassname = classNames( 'ins-logger-cell', {
+    //     'cell__index-column': columnIndex === 0,
+    //     'cell__data-column': columnIndex === 1, 
+    //     'cell__stamp-column': columnIndex === 2 
+    // }, {
+    //     'cell--highlighted': isHiglighted
+    // }, {
+    //     'cell--inFocus': rowIndex === rowInFocus && !rowSeen && columnIndex === 1
+    // });
 
-
-    const cellClassname = classNames( 'ins-logger-cell', {
-        'cell__index-column': columnIndex === 0,
-        'cell__data-column': columnIndex === 1, 
-        'cell__stamp-column': columnIndex === 2 
-    }, {
-        'cell--highlighted': isHiglighted
-    }, {
-        'cell--inFocus': rowIndex === rowInFocus && !rowSeen && columnIndex === 1
-    });
-
-    const cellSpanClassname = classNames({
-        'cell__index-span': columnIndex == 0,
-        'cell__data-span': columnIndex == 1,
-        'cell__stamp-span': columnIndex == 2  
-    });
-
-
+    // const cellSpanClassname = classNames({
+    //     'cell__index-span': columnIndex == 0,
+    //     'cell__data-span': columnIndex == 1,
+    //     'cell__stamp-span': columnIndex == 2  
+    // });
     return(
         <div style={style} 
-            className={cellClassname}
+            className='cell__data-column'
             onClick={() => handleHighlightRow(columnIndex, rowIndex)}
             onMouseEnter={handleMouseFocusEnter}>
             {/* <span
@@ -74,18 +75,15 @@ const LoggerRow = memo(({columnIndex, rowIndex, style, data}) => {
                 onMouseEnter={handleMouseFocusEnter}>
                 {getData(rowIndex)}
             </span> */}
-            
             <span
                 className='cell__index-column'>
-                {getRowIndex}
+                {() => getRowIndex}
             </span>
             <span
-                className={cell__data-span}
+                className='cell__data-span'
                 onClick={highlightText}>
-                {getDataR(rowIndex)}
+                {() => getDataR(rowIndex)}
             </span>
-
-            
             {/* <span 
                 className={cellSpanClassname}
                 onClick={highlightText}>
