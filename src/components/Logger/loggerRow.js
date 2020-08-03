@@ -4,10 +4,14 @@ import classNames from 'classnames';
 import './styles/loggerRow.styles.scss';
 
 
-const LoggerRow = memo(({columnIndex, rowIndex, style, data}) => {
-    const {parsedData, loggerRef, rowInFocus, setRowInFocus, setHiglightedRowIndexes} = data;
+const LoggerRow = memo(({index, style, data}) => {
+    const {parsedData, loggerRef, rowInFocus, setRowInFocus, setHiglightedindexes} = data;
     const [isHiglighted, setIsHiglighted] = useState(false);
     const [rowSeen, setRowSeen] = useState(false);
+
+    // console.log('This is our data object: ', data);
+    // console.log('This is our parsed data: ', parsedData);
+    // console.log('This is our index:', index);
 
 
     const lookForItemRow = (searchedInput) => {
@@ -16,25 +20,19 @@ const LoggerRow = memo(({columnIndex, rowIndex, style, data}) => {
     }
 
 
-    const getData = (colIndex, rowIndex) => {
-       return colIndex == LOGGER_DATA_COLUMN_ID ? parsedData[rowIndex]
-            : (colIndex == LOGGER_INDEX_COLUMN_ID) ? (rowIndex + LOGGER_LINE_NUMBER_INDEX_DELTA)
-            : '' ;// this would eventually be replaced with time stamp data    
-    } 
-
-
-    const getDataR = (rowIndex) => {
-        console.log('We are calling our data: ', parsedData[rowIndex]);
-        return parsedData[rowIndex]; // Can use this function to later add wrapping for syntax highlighting (basic)
+    const getData = (index) => {
+        console.log('We are calling our data: ', parsedData[index]);
+        return parsedData[index]; // Can use this function to later add wrapping for syntax highlighting (basic)
     }
 
 
-    const getRowIndex = (rowIndex) => {
-        return (rowIndex + LOGGER_LINE_NUMBER_INDEX_DELTA);
+    const getRowIndex = (index) => {
+        console.log('This is our index: ', index);
+        return (index + LOGGER_LINE_NUMBER_INDEX_DELTA);
     }
 
 
-    const handleHighlightRow = (columnIndex, rowIndex) => {
+    const handleHighlightRow = (columnIndex, index) => {
         isHiglighted ? setIsHiglighted(false) : setIsHiglighted(true);
     }
 
@@ -45,50 +43,28 @@ const LoggerRow = memo(({columnIndex, rowIndex, style, data}) => {
 
 
     const handleMouseFocusEnter = () => {
-        if(rowInFocus !== rowIndex)
+        if(rowInFocus !== index)
             return null;
 
         setRowSeen(true);
     }
-    // const cellClassname = classNames( 'ins-logger-cell', {
-    //     'cell__index-column': columnIndex === 0,
-    //     'cell__data-column': columnIndex === 1, 
-    //     'cell__stamp-column': columnIndex === 2 
-    // }, {
-    //     'cell--highlighted': isHiglighted
-    // }, {
-    //     'cell--inFocus': rowIndex === rowInFocus && !rowSeen && columnIndex === 1
-    // });
 
-    // const cellSpanClassname = classNames({
-    //     'cell__index-span': columnIndex == 0,
-    //     'cell__data-span': columnIndex == 1,
-    //     'cell__stamp-span': columnIndex == 2  
-    // });
+
     return(
         <div style={style} 
-            className='cell__data-column'
-            onClick={() => handleHighlightRow(columnIndex, rowIndex)}
-            onMouseEnter={handleMouseFocusEnter}>
-            {/* <span
-                className={cell__index-column}
-                onMouseEnter={handleMouseFocusEnter}>
-                {getData(rowIndex)}
-            </span> */}
+            className='ins-logger-cell'
+            onClick={() => handleHighlightRow(index)}
+            onMouseEnter={() => handleMouseFocusEnter()}>
+            
             <span
-                className='cell__index-column'>
-                {() => getRowIndex}
+                className='ins-logger-cell cell__index-column'>
+                {getRowIndex(index)}
             </span>
             <span
-                className='cell__data-span'
+                className='ins-logger-cell cell__data-column'
                 onClick={highlightText}>
-                {() => getDataR(rowIndex)}
+                {getData(index)}
             </span>
-            {/* <span 
-                className={cellSpanClassname}
-                onClick={highlightText}>
-                {getData(columnIndex, rowIndex)}
-            </span> */}
         </div>
     )
 });

@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import { Button, Level, LevelItem, TextInput} from '@patternfly/react-core';
 import { AngleLeftIcon, AngleRightIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, SearchIcon } from '@patternfly/react-icons';
-import classNames from 'classnames';
 import './styles/loggerToolbar.styles.scss';
 import { NavigationFullscreen } from 'material-ui/svg-icons';
 
@@ -13,22 +12,10 @@ const LoggerToolbar = ({searchedWordIndexes, itemCount, scrollToRow, loggerRef, 
 
 
     const handlePageDown = () => {
-        // loggerRef.current.scrollToItem({
-        //     align:'center',
-        //     columnIndex:1,
-        //     rowIndex:itemCount
-        // })
-
         scrollToRow(itemCount);
     }
 
     const handlePageUp = () => {
-        // loggerRef.current.scrollToItem({
-        //     align:'center',
-        //     columnIndex:1,
-        //     rowIndex:0
-        // })
-
         scrollToRow(0);
     }
 
@@ -100,7 +87,7 @@ const LoggerToolbar = ({searchedWordIndexes, itemCount, scrollToRow, loggerRef, 
 
     return(
         <Level className='logger__toolbar'>
-            <LevelItem>
+            <LevelItem className='toolbar__searchbar-group'>
                 {renderSearchBar()}
             </LevelItem>
             <LevelItem>

@@ -1,12 +1,15 @@
 .ins-logger-cell {
-    background: var(--ins-c-logger--background-color);
+    background: var(--ins-c-logger--toolbar-background-color);
     display: flex;
     align-items: center; // center everything vertically
+    height: var(--ins-c-logger--row-height);
 
     &.cell__data-column {
         font-size: var(--ins-c-logger--md-font-size);
         width: var(--ins-c-logger--row-data-width);
         padding-left: 16px;
+        display: inline-block;
+        background: var(--ins-c-logger--root-background-color);
         &:hover {
             background: var(--ins-c-logger--hover-row-color);
             cursor: pointer; // show the user they can click it
@@ -17,13 +20,11 @@
         }
     }
     &.cell__index-column {
-        background: var(--data-column-background-color);
-        justify-content: center;  
+        justify-content: center;          
         color: var(--ins-c-logger--index-font-color);
         border-right: 1px solid var(--ins-c-logger--index-BorderColor);
         border-left: 1px solid var(--ins-c-logger--index-BorderColor);
         width: var(--ins-c-logger--row-index-width);
-        // border-bottom: 1px solid var(--ins-c-logger--index-BorderColor);;
     }
 
     &.cell__data-column.cell--highlighted,  &.cell__data-column.cell--highlighted + .cell__stamp-column {
