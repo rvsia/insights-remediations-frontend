@@ -18,6 +18,10 @@
         &.cell--inFocus, &.cell--inFocus + .cell__stamp-column {
             background: var(--pf-global--palette--light-green-100);
         }
+
+        &.cell--highlighted {
+            background: var(--ins-c-logger--ins-c-logger--active-row-color) ;
+        }
     }
     &.cell__index-column {
         justify-content: center;          
@@ -27,11 +31,5 @@
         width: var(--ins-c-logger--row-index-width);
     }
 
-    &.cell__data-column.cell--highlighted,  &.cell__data-column.cell--highlighted + .cell__stamp-column {
-        background: var(--ins-c-logger--ins-c-logger--active-row-color) ;
-    }
 }
 
-.ins-logger-cell--searched-row {
-    background: yellow;
-}
