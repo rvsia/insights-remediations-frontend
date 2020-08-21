@@ -7,7 +7,7 @@ import orderBy from 'lodash/orderBy';
 import { Pagination } from '@patternfly/react-core';
 
 import { sortable, TableHeader, Table, TableBody, TableVariant } from '@patternfly/react-table';
-import { RedoIcon } from '@patternfly/react-icons';
+import { RedoIcon, TimesIcon } from '@patternfly/react-icons';
 import { TableToolbar, EmptyTable, PrimaryToolbar } from '@redhat-cloud-services/frontend-components';
 
 import { getIssueApplication, includesIgnoreCase } from '../Utilities/model';
@@ -64,13 +64,16 @@ function needsRebootCell (needsReboot) {
     if (needsReboot) {
         return (
             <div>
-                <RedoIcon/>
-                Yes
+                <RedoIcon/>{ ' ' }Yes
             </div>
         );
     }
 
-    return ('No');
+    return (
+        <div>
+            <TimesIcon/>{ ' ' }No
+        </div>
+    );
 }
 
 function systemsForAction(issue, remediation) {
@@ -148,7 +151,6 @@ function RemediationDetailsTable (props) {
     return (
         <div className='test'>
             <PrimaryToolbar
-                className='ins-c-remediation-details-table'
                 filterConfig={ {
                     items: [{
                         label: 'Search actions',
@@ -172,7 +174,6 @@ function RemediationDetailsTable (props) {
                 onSelect: (isSelected, e) => selector.props.onSelect(e, isSelected, -1) } }
                 actionsConfig={ { actions: [
                     <DeleteActionsButton key={ props.remediation.id }
-                        className='ins-c-delete-actions-button'
                         variant='secondary'
                         isDisabled={ !selectedIds.length }
                         remediation={ props.remediation }
@@ -219,6 +220,7 @@ function RemediationDetailsTable (props) {
                     <Table
                         variant={ TableVariant.compact }
                         aria-label="Actions"
+                        canSelectAll={ false }
                         className='ins-c-remediations-details-table'
                         cells={ [
                             {
