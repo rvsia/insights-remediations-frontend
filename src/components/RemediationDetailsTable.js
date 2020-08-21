@@ -4,15 +4,11 @@ import PropTypes from 'prop-types';
 import flatMap from 'lodash/flatMap';
 import orderBy from 'lodash/orderBy';
 
-import {
-    Button,
-    Pagination,
-    ToolbarItem, Toolbar, ToolbarContent
-} from '@patternfly/react-core';
+import { Pagination } from '@patternfly/react-core';
 
 import { sortable, TableHeader, Table, TableBody, TableVariant } from '@patternfly/react-table';
-import { RedoIcon, TimesIcon } from '@patternfly/react-icons';
-import { SimpleTableFilter, TableToolbar, EmptyTable, PrimaryToolbar } from '@redhat-cloud-services/frontend-components';
+import { RedoIcon } from '@patternfly/react-icons';
+import { TableToolbar, EmptyTable, PrimaryToolbar } from '@redhat-cloud-services/frontend-components';
 
 import { getIssueApplication, includesIgnoreCase } from '../Utilities/model';
 import {  buildIssueUrl } from '../Utilities/urls';
@@ -20,7 +16,7 @@ import './RemediationTable.scss';
 
 import { ConnectResolutionEditButton } from '../containers/ConnectedComponents';
 import { DeleteActionsButton } from '../containers/DeleteButtons';
-import { isBeta } from '../config';
+//import { isBeta } from '../config';
 import SystemForActionButton from './SystemForActionButton';
 
 import { useFilter, usePagination, useSelector, useSorter } from '../hooks/table';
@@ -33,15 +29,15 @@ function resolutionDescriptionCell (remediation, issue) {
     const url = buildIssueUrl(issue.id);
 
     if (issue.resolutions_available <= 1) {
-        return ( url
+        return (url
             ? <React.Fragment>
-               <a href={ url }>{ issue.description }</a>
-               <br/>{ issue.resolution.description }
+                <a href={ url }>{ issue.description }</a>
+                <br/>{ issue.resolution.description }
             </React.Fragment>
             : issue.resolution.description);
     }
 
-    return ( url
+    return (url
         ? <React.Fragment>
             <a href={ url }>{ issue.description }</a>
             <br/>{ issue.resolution.description }&nbsp;
@@ -68,10 +64,9 @@ function needsRebootCell (needsReboot) {
     if (needsReboot) {
         return (
             <div>
-                <RedoIcon/>$nbsp;
+                <RedoIcon/>
                 Yes
             </div>
-            
         );
     }
 
@@ -176,7 +171,7 @@ function RemediationDetailsTable (props) {
                 count: selectedIds.length,
                 onSelect: (isSelected, e) => selector.props.onSelect(e, isSelected, -1) } }
                 actionsConfig={ { actions: [
-                    <DeleteActionsButton
+                    <DeleteActionsButton key={ props.remediation.id }
                         className='ins-c-delete-actions-button'
                         variant='secondary'
                         isDisabled={ !selectedIds.length }
@@ -188,7 +183,7 @@ function RemediationDetailsTable (props) {
                 pagination={ { ...pagination.props, itemCount: filtered.length } }
                 activeFiltersConfig={ activeFiltersConfig }
             />
-            {/* <Toolbar className='ins-c-remediations-details-table__toolbar'>
+            { /* <Toolbar className='ins-c-remediations-details-table__toolbar'>
                 <ToolbarContent>
                     <ToolbarItem>
                         <SimpleTableFilter buttonTitle="" placeholder="Search actions" { ...filter.props } />
@@ -218,7 +213,7 @@ function RemediationDetailsTable (props) {
                         { ...debug.pagination }
                     />
                 </ToolbarContent>
-            </Toolbar> */}
+            </Toolbar> */ }
             {
                 rows.length > 0 ?
                     <Table

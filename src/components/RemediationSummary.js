@@ -4,7 +4,7 @@ import {
     Button, Flex, FlexItem, Split, SplitItem, Stack, StackItem
 } from '@patternfly/react-core';
 import { Link } from 'react-router-dom';
-import { ChartDonutUtilization, ChartDonut } from '@patternfly/react-charts';
+import { ChartDonut } from '@patternfly/react-charts';
 import { CheckCircleIcon, OffIcon, ExclamationTriangleIcon } from '@patternfly/react-icons';
 import DescriptionList from '../components/Layouts/DescriptionList';
 import classnames from 'classnames';
