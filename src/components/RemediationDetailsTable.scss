@@ -1,17 +1,29 @@
 @import '@redhat-cloud-services/frontend-components-utilities/files/Utilities/_mixins.scss';
 
+.ins-c-delete-actions-button {
+    --pf-c-button--disabled--BackgroundColor: var(--pf-global--disabled-color--100);
+    background-color: white;
+}
+
+.ins-c-remediation-details-table {
+    .pf-c-options-menu { display: none; }
+    &__header {
+        .pf-c-options-menu { display: none; }
+    }
+}
+
 .ins-c-remediation-details-table--empty {
     text-align: center;
 }
 
-.ins-c-remediations-details-table-systems-table {
+// .ins-c-remediations-details-table-systems-table {
 
-    table-layout: fixed;
+//     table-layout: fixed;
 
-    thead tr th:nth-child(2) {
-        @include rem('width', 72px);
-    }
-}
+//     thead tr th:nth-child(2) {
+//         @include rem('width', 72px);
+//     }
+// }
 
 .ins-c-remediations-reboot-check-circle {
     fill: var(--pf-global--success-color--100);

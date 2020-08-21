@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import flatMap from 'lodash/flatMap';
@@ -11,7 +11,8 @@ import {
 } from '@patternfly/react-core';
 
 import { sortable, TableHeader, Table, TableBody, TableVariant } from '@patternfly/react-table';
-import { SimpleTableFilter, TableToolbar, EmptyTable } from '@redhat-cloud-services/frontend-components';
+import { RedoIcon, TimesIcon } from '@patternfly/react-icons';
+import { SimpleTableFilter, TableToolbar, EmptyTable, PrimaryToolbar } from '@redhat-cloud-services/frontend-components';
 
 import { getIssueApplication, includesIgnoreCase } from '../Utilities/model';
 import {  buildIssueUrl } from '../Utilities/urls';
@@ -26,35 +27,52 @@ import { useFilter, usePagination, useSelector, useSorter } from '../hooks/table
 import * as debug from '../Utilities/debug';
 
 import './RemediationDetailsTable.scss';
-import { CheckCircleIcon } from '@patternfly/react-icons';
 import { PermissionContext } from '../App';
 
 function resolutionDescriptionCell (remediation, issue) {
+    const url = buildIssueUrl(issue.id);
+
     if (issue.resolutions_available <= 1) {
-        return issue.resolution.description;
+        return ( url
+            ? <React.Fragment>
+               <a href={ url }>{ issue.description }</a>
+               <br/>{ issue.resolution.description }
+            </React.Fragment>
+            : issue.resolution.description);
     }
 
-    return (
-        <React.Fragment>
+    return ( url
+        ? <React.Fragment>
+            <a href={ url }>{ issue.description }</a>
+            <br/>{ issue.resolution.description }&nbsp;
+            <ConnectResolutionEditButton issue={ issue } remediation={ remediation } />
+        </React.Fragment>
+        : <React.Fragment>
             { issue.resolution.description }&nbsp;
             <ConnectResolutionEditButton issue={ issue } remediation={ remediation } />
         </React.Fragment>
     );
 }
 
-function issueDescriptionCell (issue) {
-    const url = buildIssueUrl(issue.id);
+// function issueDescriptionCell (issue) {
+//     const url = buildIssueUrl(issue.id);
 
-    if (url) {
-        return <a href={ url }>{ issue.description }</a>;
-    }
+//     if (url) {
+//         return <a href={ url }>{ issue.description }</a>;
+//     }
 
-    return issue.description;
-}
+//     return issue.description;
+// }
 
 function needsRebootCell (needsReboot) {
     if (needsReboot) {
-        return <CheckCircleIcon className="ins-c-remediations-reboot-check-circle" aria-label="reboot required"/>;
+        return (
+            <div>
+                <RedoIcon/>$nbsp;
+                Yes
+            </div>
+            
+        );
     }
 
     return ('No');
@@ -80,9 +98,6 @@ const buildRow = (remediation) => (issue) => {
             id: issue.id,
             cells: [
                 {
-                    title: issueDescriptionCell(issue)
-                },
-                {
                     title: resolutionDescriptionCell(remediation, issue)
                 },
                 {
@@ -94,6 +109,9 @@ const buildRow = (remediation) => (issue) => {
                 {
                     title: getIssueApplication(issue),
                     props: { className: 'ins-m-nowrap' }
+                },
+                {
+                    title: systemsForAction(issue, remediation)
                 }
             ]
         }
@@ -108,6 +126,11 @@ function RemediationDetailsTable (props) {
     const filter = useFilter();
     const selector = useSelector();
     const permission = useContext(PermissionContext);
+    const [ filterText, setFilterText ] = useState('');
+
+    useEffect(() => {
+        filter.setValue(filterText);
+    }, [ filterText ]);
 
     sorter.onChange(pagination.reset);
     filter.onChange(pagination.reset);
@@ -122,9 +145,50 @@ function RemediationDetailsTable (props) {
 
     const selectedIds = selector.getSelectedIds();
 
+    const activeFiltersConfig = {
+        filters: filterText.length ? [{ category: 'Action', chips: [{ name: filterText }]}] : [],
+        onDelete: () => {setFilterText(''); filter.setValue('');}
+    };
+
     return (
         <div className='test'>
-            <Toolbar className='ins-c-remediations-details-table__toolbar'>
+            <PrimaryToolbar
+                className='ins-c-remediation-details-table'
+                filterConfig={ {
+                    items: [{
+                        label: 'Search actions',
+                        type: 'text',
+                        filterValues: {
+                            id: 'filter-by-string',
+                            key: 'filter-by-string',
+                            placeholder: 'Search',
+                            value: filterText,
+                            onChange: (_e, value) => {
+                                setFilterText(value);
+                            }
+                        }
+                    }]
+                } }
+                bulkSelect={ { items: [{ title: 'Select all',
+                    onClick: (e) => selector.props.onSelect(e, true, -1)
+                }],
+                checked: selectedIds.length && filtered.length > selectedIds.length ? null : selectedIds.length,
+                count: selectedIds.length,
+                onSelect: (isSelected, e) => selector.props.onSelect(e, isSelected, -1) } }
+                actionsConfig={ { actions: [
+                    <DeleteActionsButton
+                        className='ins-c-delete-actions-button'
+                        variant='secondary'
+                        isDisabled={ !selectedIds.length }
+                        remediation={ props.remediation }
+                        issues={ selectedIds }
+                        afterDelete={ selector.reset }
+                    />
+                ]} }
+                pagination={ { ...pagination.props, itemCount: filtered.length } }
+                activeFiltersConfig={ activeFiltersConfig }
+            />
+            {/* <Toolbar className='ins-c-remediations-details-table__toolbar'>
                 <ToolbarContent>
                     <ToolbarItem>
                         <SimpleTableFilter buttonTitle="" placeholder="Search actions" { ...filter.props } />
@@ -154,7 +218,7 @@ function RemediationDetailsTable (props) {
                         { ...debug.pagination }
                     />
                 </ToolbarContent>
-            </Toolbar>
+            </Toolbar> */}
             {
                 rows.length > 0 ?
                     <Table
@@ -165,9 +229,7 @@ function RemediationDetailsTable (props) {
                             {
                                 title: 'Actions',
                                 transforms: [ sortable ]
-                            }, {
-                                title: 'Resolution'
-                            }, {
+                            },  {
                                 title: 'Reboot required',
                                 transforms: [ sortable ]
                             }, {
@@ -175,6 +237,9 @@ function RemediationDetailsTable (props) {
                                 transforms: [ sortable ]
                             }, {
                                 title: 'Type',
+                                transforms: [ sortable ]
+                            }, {
+                                title: 'Status',
                                 transforms: [ sortable ]
                             }]
                         }
