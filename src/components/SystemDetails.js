@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -6,33 +5,28 @@ import { Skeleton } from '@redhat-cloud-services/frontend-components';
 import SyntaxHighlighter from 'react-syntax-highlighter/dist/esm/light';
 import Logger from './Logger/logger';
 import yaml from 'react-syntax-highlighter/dist/esm/languages/hljs/yaml';
-import docco from 'react-syntax-highlighter/dist/esm/styles/hljs/docco';
+// import docco from 'react-syntax-highlighter/dist/esm/styles/hljs/docco';
 import { Spinner } from '@patternfly/react-core';
-import classnames from 'classnames';
-
+// import classnames from 'classnames';
 import { Title } from '@patternfly/react-core';
-
 import './SystemDetails.scss';
 
 SyntaxHighlighter.registerLanguage('yaml', yaml);
 
 const PlaybookSystemDetails = ({ systemId, playbookRunSystemDetails }) => {
 
-    const outputClasses = classnames(
-        'ins-c-job-output',
-        { ['ins-c-job-output__finished']: playbookRunSystemDetails.status !== 'running' }
-    );
-
-    console.log('This is my playbook details: ',playbookRunSystemDetails);
+    // const outputClasses = classnames(
+    //     'ins-c-job-output',
+    //     { ['ins-c-job-output__finished']: playbookRunSystemDetails.status !== 'running' }
+    // );
 
     return <React.Fragment>
         <Title headingLevel="h4" size="xl" className='ins-c-job-output__title'>Playbook Log</Title>
         { systemId && systemId === playbookRunSystemDetails.system_id ?
             <React.Fragment>
                 <Logger
-                    logTitle='Playbook Console Data' 
-                    data={playbookRunSystemDetails}
-                    // path={'.console'} // idea is to have the user point to the data that they want to output(changes between ansible/remediations)
+                    logTitle='Playbook Console Data'
+                    data={ playbookRunSystemDetails }
                 />
                 { playbookRunSystemDetails.status === 'running' &&
                     <div className='ins-l-playbook-running'>

@@ -1,4 +1,4 @@
-// Logger Dimensions 
+// Logger Dimensions
 export const LOGGER_HEIGHT = 600;
 export const LOGGER_WIDTH = 1200;
 export const LOGGER_COLUMNS_AMOUNT = 3;
