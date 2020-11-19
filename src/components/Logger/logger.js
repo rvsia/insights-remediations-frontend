@@ -172,6 +172,8 @@ const Logger = memo(({ hasSearchbar, data, isPayloadConsole }) => {
             </List>
             <LoggerFooter
                 highlightedRowIndexes={ highlightedRowIndexes }
+                scrollToRow={ scrollToRow }
+                setRowInFocus={ setRowInFocus }
             />
         </div>
       </>

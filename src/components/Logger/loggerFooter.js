@@ -5,17 +5,17 @@ import { Button, Level, LevelItem } from '@patternfly/react-core';
 import { AngleLeftIcon, AngleRightIcon } from '@patternfly/react-icons';
 import PropTypes from 'prop-types';
 
-const LoggerFooter = ({ highlightedRowIndexes }) => {
-    // const [currentHighlightedIndex, setCurrentHighlightedIndex] = useState();
+const LoggerFooter = ({ highlightedRowIndexes, rowInFocus, scrollToRow }) => {
+    const [ currentHighlightedIndex, setCurrentHighlightedIndex ] = useState();
     const [ rowIndexes, setRowIndexes ] = useState([ 'temp' ]);
     const [ isVisible, setIsVisible ] = useState(false);
 
     useEffect(() => {
         if (highlightedRowIndexes.length > 1 && !isVisible) {
-            console.log('Activating our footer: ');
+            // console.log('Activating our footer: ');
             setIsVisible(true);
         } else {
-            console.log('Deactivting our footer');
+            // console.log('Deactivting our footer');
             setIsVisible(false);
         }
     });
@@ -24,27 +24,30 @@ const LoggerFooter = ({ highlightedRowIndexes }) => {
         setRowIndexes(highlightedRowIndexes);
     }, [ rowIndexes ]);
 
+    useEffect(() => {
+        if (rowInFocus) {
+            scrollToRow(currentHighlightedIndex);
+        }
+    }, [ currentHighlightedIndex ]);
+
     const mapStateToProps = () => {
         setRowIndexes(highlightedRowIndexes);
     };
 
     const handleNextHighlightedRow = () => {
         if (rowIndexes.length <= 1) {
-            console.log('Cannot move forwards');
-        } else {
-            console.log('We can move forward');
+            return;
         }
+
+        setCurrentHighlightedIndex(2);
     };
 
     const handlePrevHighlightedRow = () => {
         if (rowIndexes.length <= 1) {
-            console.log('Cannot move back');
-        }
-        else {
-            console.log('Can move, we back');
+            return;
         }
 
-        console.log('My current rowIndex is: ', rowIndexes);
+        setCurrentHighlightedIndex(1);
     };
 
     const displayFooter = () => {
@@ -84,7 +87,9 @@ const LoggerFooter = ({ highlightedRowIndexes }) => {
 };
 
 LoggerFooter.propTypes = {
-    highlightedRowIndexes: PropTypes.array
+    highlightedRowIndexes: PropTypes.array,
+    rowInFocus: PropTypes.number,
+    scrollToRow: PropTypes.func
 };
 
 export default LoggerFooter;
