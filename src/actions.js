@@ -1,9 +1,9 @@
 import { ACTION_TYPES } from './constants';
-import { remediations, resolutions, getRemediationStatus } from './api';
+import { remediations, resolutions, getRemediationStatus, sources } from './api';
 
-export const loadRemediations = (sortBy = 'updated_at', sortDir = 'desc', filter, limit, offset) => ({
+export const loadRemediations = (sortBy = 'updated_at', sortDir = 'desc', filter, limit, offset, system, hideArchived) => ({
     type: ACTION_TYPES.LOAD_REMEDIATIONS,
-    payload: remediations.getRemediations(`${sortDir === 'desc' ? '-' : ''}${sortBy}`, filter, limit, offset)
+    payload: remediations.getRemediations(`${sortDir === 'desc' ? '-' : ''}${sortBy}`, filter, limit, offset, system, hideArchived)
 });
 
 export const loadRemediation = (id) => ({
@@ -63,10 +63,10 @@ export const getConnectionStatus = (id) => {
     };
 };
 
-export const runRemediation = (id, etag) => {
+export const runRemediation = (id, etag, exclude) => {
     return {
         type: ACTION_TYPES.RUN_REMEDIATION,
-        payload: remediations.runRemediation(id, { headers: { 'If-Match': etag }})
+        payload: remediations.runRemediation(id, { headers: { 'If-Match': etag }, data: { exclude }})
     };
 };
 
@@ -107,3 +107,9 @@ export const expandInventoryTable = (id, isOpen) => ({
         isOpen
     }
 });
+
+export const getEndpoint = (id, options = {}) => ({
+    type: ACTION_TYPES.GET_ENDPOINT,
+    payload: sources.showEndpoint(id, options)
+});
+// payload: sources.listEndpoints(id, options)

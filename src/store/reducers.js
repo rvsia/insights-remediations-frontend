@@ -152,9 +152,13 @@ const reducers = {
             return {
                 ...state,
                 columns: [
-                    { key: 'display_name', title: 'System name',
+                    { key: 'display_name', title: 'Name',
                     // eslint-disable-next-line
                         renderFunc: (name, id, { display_name }) => <div><a href={props.urlBuilder(id)}>{display_name}</a></div>
+                    },
+                    { key: 'system_status', title: 'Status',
+                    // eslint-disable-next-line
+                        renderFunc: (name, id) => <div>{props.generateStatus(id)}</div>
                     }
                 ]
             };
@@ -253,6 +257,18 @@ const reducers = {
         }),
         [ACTION_TYPES.RUN_REMEDIATION_REJECTED]: (state, action) => ({
             status: action.payload.response.status === 412 ? 'changed' : 'rejected'
+        })
+    }, {
+        status: 'initial'
+    }),
+
+    sources: applyReducerHash({
+        [ACTION_TYPES.GET_ENDPOINT_FULFILLED]: (state, action) => ({
+            status: 'fulfilled',
+            data: {
+                ...state.data,
+                [action.payload.id]: action.payload
+            }
         })
     }, {
         status: 'initial'
