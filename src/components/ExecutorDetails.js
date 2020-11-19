@@ -3,6 +3,7 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import { connect, useStore } from 'react-redux';
 import PropTypes from 'prop-types';
+import { reactCore } from '@redhat-cloud-services/frontend-components-utilities/files/inventoryDependencies'; 
 import { Link } from 'react-router-dom';
 import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import * as pfReactTable from '@patternfly/react-table';
@@ -78,7 +79,8 @@ const ExecutorDetails = ({
             ReactRedux,
             react: React,
             reactRouterDom,
-            pfReactTable
+            pfReactTable,
+            pfReact: reactCore
         });
 
         getRegistry().register({

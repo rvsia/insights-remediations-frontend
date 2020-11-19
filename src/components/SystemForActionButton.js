@@ -5,6 +5,7 @@ import * as reactRouterDom from 'react-router-dom';
 import * as ReactRedux from 'react-redux';
 import { connect, useStore } from 'react-redux';
 import orderBy from 'lodash/orderBy';
+import { reactCore } from '@redhat-cloud-services/frontend-components-utilities/files/inventoryDependencies'; 
 
 import PropTypes from 'prop-types';
 import {
@@ -47,7 +48,8 @@ const SystemForActionButton = ({ issue, remediation, onDelete }) => {
             ReactRedux,
             react: React,
             reactRouterDom,
-            pfReactTable
+            pfReactTable,
+            pfReact: reactCore
         });
 
         getRegistry().register({
