@@ -72,7 +72,8 @@ const LoggerRow = memo(({ index, style, data }) => {
             </span>
             <span
                 className={ rowClassname }
-                onClick={ handleHighlightRow(index) }>
+                onClick={ handleHighlightRow(index) }
+            >
                 { getData(index) }
             </span>
         </div>
