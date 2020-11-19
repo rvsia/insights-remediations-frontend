@@ -5,9 +5,30 @@ import './styles/loggerRow.styles.scss';
 
 
 const LoggerRow = memo(({index, style, data}) => {
-    const {parsedData, loggerRef, rowInFocus, setRowInFocus, setHiglightedindexes} = data;
+    const {parsedData, loggerRef, rowInFocus, setRowInFocus, setHighlightedRowIndexes, highlightedRowIndexes} = data;
+    const [clickCounter, setClickCounter] = useState(0);
     const [isHiglighted, setIsHiglighted] = useState(false);
     const [rowSeen, setRowSeen] = useState(false);
+
+
+    useEffect(() => {
+        const currentHighlightedIndexes = highlightedRowIndexes;
+        var temp = 0;
+        
+
+        if(isHiglighted && clickCounter > 0) { //the logic should be !isHighlighted, don't know why it only works in its inverse
+            currentHighlightedIndexes.push(index);
+            setHighlightedRowIndexes(currentHighlightedIndexes);
+            console.log('This is our new state, adding: ', highlightedRowIndexes);
+        }    
+        else if (!isHiglighted && clickCounter > 0){
+            temp = currentHighlightedIndexes.indexOf(index);
+            currentHighlightedIndexes.splice(temp, 1);
+            setHighlightedRowIndexes(currentHighlightedIndexes);
+            console.log('This is our new state, substracting: ', highlightedRowIndexes);
+        }
+
+    }, [isHiglighted]);
 
     const lookForItemRow = (searchedInput) => {
         const searchedIndex = parseInt(searchedInput);
@@ -25,15 +46,16 @@ const LoggerRow = memo(({index, style, data}) => {
     }
 
 
-    const handleHighlightRow = (columnIndex, index) => {
-        isHiglighted ? setIsHiglighted(false) : setIsHiglighted(true);
-        console.log('Changing highlighted to: ', isHiglighted);
+    const handleHighlightRow = (index) => {
+        const counter = clickCounter + 1;
+        setClickCounter(counter);
+        setIsHiglighted(!isHiglighted);
     }
 
 
     const highlightText = () => {
-        console.log('Second test completed!!!');
-        console.log('highlightedText: ', isHiglighted);
+        // console.log('Second test completed!!!');
+        // console.log('highlightedText: ', isHiglighted);
     }
 
 
@@ -60,7 +82,7 @@ const LoggerRow = memo(({index, style, data}) => {
             className='ins-logger-cell'
             onClick={() => handleHighlightRow(index)}
             onMouseEnter={() => handleMouseFocusEnter()}>
-            
+
             <span
                 className='ins-logger-cell cell__index-column'>
                 {getRowIndex(index)}

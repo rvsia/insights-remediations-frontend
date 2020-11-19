@@ -3,12 +3,14 @@
 
     // Try to copy this naming
     --ins-c-logger--BackgroundColor: var(--pf-global--BackgroundColor--100);
+    // --ins-c-logger--BackgroundColor: var(--)
     --ins-c-logger--BorderColor: var(--pf-global--palette--black-100);
 
     // TODO update all of these
+    --ins-c-logger--spacer-xs: var(--pf-global--spacer--xs);
     --ins-c-logger--spacer-sm: var(--pf-global--spacer--sm);
     --ins-c-logger--spacer-md: var(--pf-global--spacer--md);
-    --ins-c-logger--spacer-md: var(--pf-global--spacer--lg);
+    --ins-c-logger--spacer-lg: var(--pf-global--spacer--lg);
     --ins-c-logger--spacer-xl: var(--pf-global--spacer--xl);
     --ins-c-logger--spacer-2xl: var(--pf-global--spacer--2xl);
     --ins-c-logger--global-spacer: var(--pf-global--spacer--lg);
@@ -19,6 +21,7 @@
     --ins-c-logger--row-height: 30px;
     --ins-c-logger--row-index-width: 48px;
     --ins-c-logger--row-data-width: 1185px;
+    --ins-c-logger--root-width: 1200px;
     --ins-c-logger--pinned-row-color: var(--pf-global--palette--gold-50);
     --ins-c-logger--action-row-color: var(--pf-global--palette--white);
     --ins-c-logger--index-column-background-color: var(--pf-global--palette--black-300);

@@ -9,7 +9,7 @@ const LoggerToolbar = ({searchedWordIndexes, itemCount, scrollToRow, loggerRef, 
     const [userInput, setUserInput] = useState('');
     const disablingFlag = searchedInput == '' ? true : false;
     let value = userInput;
-
+    
 
     const handlePageDown = () => {
         scrollToRow(itemCount);
@@ -35,7 +35,7 @@ const LoggerToolbar = ({searchedWordIndexes, itemCount, scrollToRow, loggerRef, 
         if(oldIndex >= searchedWordIndexes.length-1)
             return null;
         
-        setRowInFocus(searchedWordIndexes[++oldIndex]);        
+        setRowInFocus(searchedWordIndexes[oldIndex++]);        
     }
 
     const handlePrevSearchItem = () => {

@@ -3,6 +3,7 @@ import { VariableSizeList as List, areEqual } from 'react-window';
 import LoggerRow from './loggerRow';
 import LoggerToolbar from './loggerToolbar';
 import LoggerHeader from './loggerHeader';
+import LoggerFooter from './loggerFooter';
 import memoize from 'memoize-one';
 import {LOGGER_ROW_HEIGHT, LOGGER_HEIGHT, LOGGER_WIDTH} from './utils/constants';
 import MLParser from './mlParser';
@@ -91,8 +92,14 @@ const Logger = memo(({hasSearchbar, includesLoadingStatus, path ,data, isPayload
 
 
     useEffect(() => {
+        console.log('Me estoy renderizando?');
         scrollToRow(rowInFocus);
     }, [rowInFocus]);
+
+
+    useEffect(() => {
+        console.log('This is the state of our highlighted indexes: ', highlightedRowIndexes);
+    }, [highlightedRowIndexes]);
 
 
     const searchForKeyword = () => {
@@ -144,31 +151,34 @@ const Logger = memo(({hasSearchbar, includesLoadingStatus, path ,data, isPayload
     return(
         <>
           <div className='ins-c-logger' hasGutter>
-              <LoggerToolbar 
-                  rowInFocus={rowInFocus}
-                  setRowInFocus={setRowInFocus}
-                  scrollToRow={scrollToRow}
-                  loggerRef={loggerRef}
-                  itemCount={parsedData.length}
-                  searchedWordIndexes={searchedWordIndexes}
-                  itemsPerPage={calculateItemsPerPage}
-                  hasSearchbar={hasSearchbar}
-                  searchedInput={searchedInput}
-                  setSearchedInput={setSearchedInput}
-                  searchForKeyword={searchForKeyword}
+                <LoggerToolbar 
+                    rowInFocus={rowInFocus}
+                    setRowInFocus={setRowInFocus}
+                    scrollToRow={scrollToRow}
+                    loggerRef={loggerRef}
+                    itemCount={parsedData.length}
+                    searchedWordIndexes={searchedWordIndexes}
+                    itemsPerPage={calculateItemsPerPage}
+                    hasSearchbar={hasSearchbar}
+                    searchedInput={searchedInput}
+                    setSearchedInput={setSearchedInput}
+                    searchForKeyword={searchForKeyword}
                 />
-              <List 
-                  className='logger__grid'
-                  rowHeight={index => setRowHeight(index)}
-                  height={LOGGER_HEIGHT}
-                  width={LOGGER_WIDTH}
-                  itemSize={() => 30}
-                  itemCount={parsedData.length}
-                  itemData={dataToRender}
-                  ref={loggerRef}
-              >
-                {LoggerRow}
-              </List>
+                <List 
+                    className='logger__grid'
+                    rowHeight={index => setRowHeight(index)}
+                    height={LOGGER_HEIGHT}
+                    width={LOGGER_WIDTH}
+                    itemSize={() => 30}
+                    itemCount={parsedData.length}
+                    itemData={dataToRender}
+                    ref={loggerRef}
+                >
+                    {LoggerRow}
+                </List>
+                <LoggerFooter 
+                    highlightedRowIndexes={highlightedRowIndexes}
+                />
           </div>
         </>
     );
