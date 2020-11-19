@@ -2,7 +2,6 @@ import React, { useEffect, useState, memo }  from 'react';
 import { VariableSizeList as List, areEqual } from 'react-window';
 import LoggerRow from './loggerRow';
 import LoggerToolbar from './loggerToolbar';
-// import LoggerHeader from './loggerHeader';
 import LoggerFooter from './loggerFooter';
 import PropTypes from 'prop-types';
 import memoize from 'memoize-one';
@@ -79,6 +78,7 @@ const Logger = memo(({ hasSearchbar, data, isPayloadConsole }) => {
         setHighlightedRowIndexes,
         searchedWordIndexes
     );
+    console.log('Esta es mi data papi: ', data); //eslint-disable-line
 
     const scrollToRow = (searchedRowIndex) => {
         setRowInFocus(searchedRowIndex);
@@ -102,10 +102,6 @@ const Logger = memo(({ hasSearchbar, data, isPayloadConsole }) => {
     useEffect(() => {
         scrollToRow(rowInFocus);
     }, [ rowInFocus ]);
-
-    // useEffect(() => {
-    //     console.log('This is the state of our highlighted indexes: ', highlightedRowIndexes);
-    // }, [ highlightedRowIndexes ]);
 
     const searchForKeyword = () => {
         let rowIndexCounter = 0;

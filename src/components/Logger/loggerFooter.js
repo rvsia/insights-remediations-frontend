@@ -53,9 +53,6 @@ const LoggerFooter = ({ highlightedRowIndexes, rowInFocus, scrollToRow }) => {
     const displayFooter = () => {
         return (
                 <>
-                    { /* <LevelItem>
-                        <span className='footer__span'>Highlighted Rows: {}</span>
-                    </LevelItem> */ }
                     <LevelItem className='footer__icon-group'>
                         <Button
                             variant='plain'
@@ -71,7 +68,7 @@ const LoggerFooter = ({ highlightedRowIndexes, rowInFocus, scrollToRow }) => {
                             isSmall
                             onClick={ () => handleNextHighlightedRow() }
                         >
-                            <AngleRightIcon/>
+                            <AngleRightIcon />
                         </Button>
                     </LevelItem>
                 </>
@@ -80,7 +77,7 @@ const LoggerFooter = ({ highlightedRowIndexes, rowInFocus, scrollToRow }) => {
 
     return (
         <Level className='ins-logger-footer'>
-            { displayFooter() }
+            { displayFooter }
             { () => mapStateToProps() }
         </Level>
     );

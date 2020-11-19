@@ -80,8 +80,8 @@ const LoggerRow = memo(({ index, style, data }) => {
 });
 
 LoggerRow.propTypes = {
-    index: PropTypes.string,
-    style: PropTypes.style,
+    index: PropTypes.number,
+    style: PropTypes.object,
     data: PropTypes.object
 };
 

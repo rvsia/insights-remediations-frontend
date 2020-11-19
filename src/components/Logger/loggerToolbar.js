@@ -3,7 +3,6 @@ import { Button, Level, LevelItem, TextInput } from '@patternfly/react-core';
 import { AngleLeftIcon, AngleRightIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, SearchIcon } from '@patternfly/react-icons';
 import PropTypes from 'prop-types';
 import './styles/loggerToolbar.styles.scss';
-// import { NavigationFullscreen } from 'material-ui/svg-icons';
 
 const LoggerToolbar = ({
     searchedWordIndexes,
@@ -141,7 +140,7 @@ const LoggerToolbar = ({
 LoggerToolbar.propTypes = {
     itemCount: PropTypes.number,
     scrollToRow: PropTypes.func,
-    rowInFocus: PropTypes.object,
+    rowInFocus: PropTypes.string,
     setRowInFocus: PropTypes.func,
     hasSearchbar: PropTypes.bool,
     setSearchedInput: PropTypes.func,
