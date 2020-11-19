@@ -14,7 +14,7 @@ const LoggerRow = memo(({ index, style, data }) => {
         const currentHighlightedIndexes = highlightedRowIndexes;
         var temp = 0;
 
-        if (isHiglighted && clickCounter > 0) { //the logic should be !isHighlighted, don't know why it only works in its inverse
+        if (isHiglighted && clickCounter > 0) {
             currentHighlightedIndexes.push(index);
             setHighlightedRowIndexes(currentHighlightedIndexes);
             console.log('This is our new state, adding: ', highlightedRowIndexes);
