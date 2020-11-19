@@ -83,7 +83,7 @@ const LoggerRow = memo(({ index, style, data }) => {
 
 LoggerRow.defaultProps = {
   index: PropTypes.string,
-  style: PropTypes.
+  style: PropTypes.style,
 }
 
 export default LoggerRow;
