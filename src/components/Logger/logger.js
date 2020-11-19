@@ -32,7 +32,6 @@ const cleanUpStringArray = (data) => { // Needs refactoring and refinement *late
     return data;
 };
 
-// To be moved as a helper function to mlParser
 const parseConsoleOutput = (data) => {
     const stringToSplitWith = '\n';
     const stringifiedData = YAML.stringify(data);
@@ -69,6 +68,7 @@ const Logger = memo(({ hasSearchbar, data, isPayloadConsole }) => {
     const [ highlightedRowIndexes, setHighlightedRowIndexes ] = useState([]);
     const [ rowInFocus, setRowInFocus ] = useState('');
     const loggerRef = React.useRef();
+    Logger.displayName = 'Logger';
     const dataToRender = createLoggerDataItem(
         parsedData,
         searchedInput,
@@ -79,6 +79,13 @@ const Logger = memo(({ hasSearchbar, data, isPayloadConsole }) => {
         setHighlightedRowIndexes,
         searchedWordIndexes
     );
+
+    const scrollToRow = (searchedRowIndex) => {
+        setRowInFocus(searchedRowIndex);
+        loggerRef.current.scrollToItem(searchedRowIndex, 'center');
+
+        return true;
+    };
 
     useEffect(() => {
         isPayloadConsole
@@ -102,7 +109,7 @@ const Logger = memo(({ hasSearchbar, data, isPayloadConsole }) => {
 
     const searchForKeyword = () => {
         let rowIndexCounter = 0;
-        let searchResults = [];
+        const searchResults = [];
 
         if (searchedInput.match(':')) {
             const splitInput = searchedInput.split(':');
@@ -122,18 +129,11 @@ const Logger = memo(({ hasSearchbar, data, isPayloadConsole }) => {
             rowIndexCounter++;
         }
 
-        setSearchedWordIndexes(searchedWordIndexes => [ ...searchResults ]); // gonna need a way for the user to clear these
+        setSearchedWordIndexes(searchedWordIndexes => [ ...searchedWordIndexes, ...searchResults ]); // gonna need a way for the user to clear these
     };
 
     const calculateItemsPerPage = () => {
         return Math.round(LOGGER_HEIGHT / LOGGER_ROW_HEIGHT); // This will have to change with collapsible rows
-    };
-
-    const scrollToRow = (searchedRowIndex) => {
-        setRowInFocus(searchedRowIndex);
-        loggerRef.current.scrollToItem(searchedRowIndex, 'center');
-
-        return true;
     };
 
     const setRowHeight = (index) => {
@@ -184,6 +184,12 @@ Logger.defaultProps =  {
     includesLoadingStatus: true,
     searchedKeyword: '',
     path: '.console'
+};
+
+Logger.propTypes = {
+    hasSearchbar: PropTypes.bool,
+    data: PropTypes.object,
+    isPayloadConsole: PropTypes.bool
 };
 
 export default Logger;

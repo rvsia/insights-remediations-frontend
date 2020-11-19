@@ -1,10 +1,21 @@
 import React, { useState } from 'react';
 import { Button, Level, LevelItem, TextInput } from '@patternfly/react-core';
 import { AngleLeftIcon, AngleRightIcon, AngleDoubleDownIcon, AngleDoubleUpIcon, SearchIcon } from '@patternfly/react-icons';
+import PropTypes from 'prop-types';
 import './styles/loggerToolbar.styles.scss';
 // import { NavigationFullscreen } from 'material-ui/svg-icons';
 
-const LoggerToolbar = ({ searchedWordIndexes, itemCount, scrollToRow, loggerRef, rowInFocus, setRowInFocus, hasSearchbar, setSearchedInput, searchedInput, searchForKeyword }) => {
+const LoggerToolbar = ({
+    searchedWordIndexes,
+    itemCount,
+    scrollToRow,
+    rowInFocus,
+    setRowInFocus,
+    hasSearchbar,
+    setSearchedInput,
+    searchedInput,
+    searchForKeyword
+}) => {
     const [ userInput, setUserInput ]  = useState('');
     const disablingFlag = searchedInput === '' ? true : false;
     const value = userInput;
@@ -41,7 +52,7 @@ const LoggerToolbar = ({ searchedWordIndexes, itemCount, scrollToRow, loggerRef,
         let oldIndex = searchedWordIndexes.indexOf(rowInFocus);
 
         if (oldIndex <= 0) {
-          return null;
+            return null;
         }
 
         setRowInFocus(searchedWordIndexes[--oldIndex]);
@@ -49,10 +60,10 @@ const LoggerToolbar = ({ searchedWordIndexes, itemCount, scrollToRow, loggerRef,
 
     const renderSearchBar = () => {
         if (!hasSearchbar) {
-          return null;
+            return null;
         }
 
-        return(
+        return (
             <>
                 <TextInput
                     type='text'
@@ -77,8 +88,22 @@ const LoggerToolbar = ({ searchedWordIndexes, itemCount, scrollToRow, loggerRef,
         if (searchedWordIndexes.length >= 2) {
             return (
                 <>
-                    <Button variant='plain' aria-label='Look up' className='toolbar__icons' onClick={ handlePrevSearchItem }><AngleLeftIcon id='lookUp'/></Button>
-                    <Button variant='plain' aria-label='Look down' className='toolbar__icons' onClick={ handleNextSearchItem }><AngleRightIcon id='lookDown'/></Button>
+                    <Button
+                        variant='plain'
+                        aria-label='Look up'
+                        className='toolbar__icons'
+                        onClick={ handlePrevSearchItem }
+                    >
+                        <AngleLeftIcon id='lookUp'/>
+                    </Button>
+                    <Button
+                        variant='plain'
+                        aria-label='Look down'
+                        className='toolbar__icons'
+                        onClick={ handleNextSearchItem }
+                    >
+                        <AngleRightIcon id='lookDown'/>
+                    </Button>
                 </>
             );
         }
@@ -91,12 +116,38 @@ const LoggerToolbar = ({ searchedWordIndexes, itemCount, scrollToRow, loggerRef,
             </LevelItem>
             <LevelItem>
                 { renderSearchButtons() }
-                <Button variant='plain' aria-label='Page up' className='toolbar__icons' onClick={ handlePageUp }><AngleDoubleUpIcon id='pageUp'/></Button>
-                <Button variant='plain' aria-label='Page down' className='toolbar__icons' onClick={ handlePageDown }><AngleDoubleDownIcon id='skipDown'/></Button>
+                <Button
+                    variant='plain'
+                    aria-label='Page up'
+                    className='toolbar__icons'
+                    onClick={ handlePageUp }
+                >
+                    <AngleDoubleUpIcon id='pageUp'/>
+                </Button>
+                <Button
+                    variant='plain'
+                    aria-label='Page down'
+                    className='toolbar__icons'
+                    onClick={ handlePageDown }
+                >
+                    <AngleDoubleDownIcon id='skipDown'/>
+                </Button>
             </LevelItem>
         </Level>
     );
 
+};
+
+LoggerToolbar.propTypes = {
+    itemCount: PropTypes.number,
+    scrollToRow: PropTypes.func,
+    rowInFocus: PropTypes.object,
+    setRowInFocus: PropTypes.func,
+    hasSearchbar: PropTypes.bool,
+    setSearchedInput: PropTypes.func,
+    searchedInput: PropTypes.string,
+    searchForKeyword: PropTypes.func,
+    searchedWordIndexes: PropTypes.array
 };
 
 export default LoggerToolbar;

@@ -53,8 +53,20 @@ const LoggerFooter = ({ highlightedRowIndexes }) => {
                         <span className='footer__span'>Highlighted Rows: {}</span>
                     </LevelItem> */ }
                     <LevelItem className='footer__icon-group'>
-                        <Button variant='plain' className='footer__icons' isSmall onClick={ () => handlePrevHighlightedRow() }><AngleLeftIcon /></Button>
-                        <Button variant='plain' className='footer__icons' isSmall onClick={ () => handleNextHighlightedRow() }><AngleRightIcon/></Button>
+                        <Button 
+                          variant='plain'
+                          className='footer__icons'
+                          isSmall 
+                          onClick={ () => handlePrevHighlightedRow() }>
+                            <AngleLeftIcon />
+                        </Button>
+                        <Button 
+                          variant='plain'
+                          className='footer__icons'
+                          isSmall 
+                          onClick={ () => handleNextHighlightedRow() }>
+                            <AngleRightIcon/>
+                        </Button>
                     </LevelItem>
                 </>
         );

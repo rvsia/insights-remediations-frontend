@@ -5,14 +5,14 @@ import './styles/loggerRow.styles.scss';
 import PropTypes from 'prop-types';
 
 const LoggerRow = memo(({ index, style, data }) => {
-    const { parsedData, loggerRef, rowInFocus, setRowInFocus, setHighlightedRowIndexes, highlightedRowIndexes } = data;
+    const { parsedData, loggerRef, rowInFocus, setHighlightedRowIndexes, highlightedRowIndexes } = data;
     const [ clickCounter, setClickCounter ] = useState(0);
     const [ isHiglighted, setIsHiglighted ] = useState(false);
     const [ rowSeen, setRowSeen ] = useState(false);
 
     useEffect(() => {
         const currentHighlightedIndexes = highlightedRowIndexes;
-        var temp = 0;
+        let temp = 0;
 
         if (isHiglighted && clickCounter > 0) {
             currentHighlightedIndexes.push(index);
@@ -27,10 +27,10 @@ const LoggerRow = memo(({ index, style, data }) => {
         }
     }, [ isHiglighted ]);
 
-    const lookForItemRow = (searchedInput) => {
-        const searchedIndex = parseInt(searchedInput);
-        loggerRef.current.scrollToItem(searchedIndex);
-    };
+    // const lookForItemRow = (searchedInput) => {
+    //     const searchedIndex = parseInt(searchedInput);
+    //     loggerRef.current.scrollToItem(searchedIndex);
+    // };
 
     const getData = (index) => {
         return parsedData[ index ]; // Can use this function to later add wrapping for syntax highlighting (basic)
@@ -40,7 +40,7 @@ const LoggerRow = memo(({ index, style, data }) => {
         return (index + LOGGER_LINE_NUMBER_INDEX_DELTA);
     };
 
-    const handleHighlightRow = (index) => {
+    const handleHighlightRow = () => {
         const counter = clickCounter + 1;
         setClickCounter(counter);
         setIsHiglighted(!isHiglighted);
@@ -54,7 +54,7 @@ const LoggerRow = memo(({ index, style, data }) => {
         setRowSeen(true);
     };
 
-    const rowClassname = classNames( 'ins-logger-cell cell__data-column',
+    const rowClassname = classNames('ins-logger-cell cell__data-column',
         {
             'cell--highlighted': isHiglighted
         },
@@ -81,9 +81,10 @@ const LoggerRow = memo(({ index, style, data }) => {
     );
 });
 
-LoggerRow.defaultProps = {
-  index: PropTypes.string,
-  style: PropTypes.style,
-}
+LoggerRow.propTypes = {
+    index: PropTypes.string,
+    style: PropTypes.style,
+    data: PropTypes.object
+};
 
 export default LoggerRow;
