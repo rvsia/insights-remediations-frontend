@@ -5,7 +5,7 @@ import './styles/loggerRow.styles.scss';
 import PropTypes from 'prop-types';
 
 const LoggerRow = memo(({ index, style, data }) => {
-    const { parsedData, loggerRef, rowInFocus, setHighlightedRowIndexes, highlightedRowIndexes } = data;
+    const { parsedData, rowInFocus, setHighlightedRowIndexes, highlightedRowIndexes } = data;
     const [ clickCounter, setClickCounter ] = useState(0);
     const [ isHiglighted, setIsHiglighted ] = useState(false);
     const [ rowSeen, setRowSeen ] = useState(false);
@@ -17,13 +17,11 @@ const LoggerRow = memo(({ index, style, data }) => {
         if (isHiglighted && clickCounter > 0) {
             currentHighlightedIndexes.push(index);
             setHighlightedRowIndexes(currentHighlightedIndexes);
-            console.log('This is our new state, adding: ', highlightedRowIndexes);
         }
         else if (!isHiglighted && clickCounter > 0) {
             temp = currentHighlightedIndexes.indexOf(index);
             currentHighlightedIndexes.splice(temp, 1);
             setHighlightedRowIndexes(currentHighlightedIndexes);
-            console.log('This is our new state, substracting: ', highlightedRowIndexes);
         }
     }, [ isHiglighted ]);
 
@@ -47,7 +45,7 @@ const LoggerRow = memo(({ index, style, data }) => {
     };
 
     const handleMouseFocusEnter = () => {
-        if (rowInFocus !== index) {
+        if (rowInFocus !== index && rowSeen) {
             return null;
         }
 
@@ -74,7 +72,7 @@ const LoggerRow = memo(({ index, style, data }) => {
             </span>
             <span
                 className={ rowClassname }
-                onClick={ handleHighlightText(index) }>
+                onClick={ handleHighlightRow(index) }>
                 { getData(index) }
             </span>
         </div>

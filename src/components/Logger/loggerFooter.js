@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import './styles/loggerFooter.styles.scss';
 import { Button, Level, LevelItem } from '@patternfly/react-core';
 import { AngleLeftIcon, AngleRightIcon } from '@patternfly/react-icons';
+import PropTypes from 'prop-types';
 
 const LoggerFooter = ({ highlightedRowIndexes }) => {
     // const [currentHighlightedIndex, setCurrentHighlightedIndex] = useState();
@@ -10,7 +11,7 @@ const LoggerFooter = ({ highlightedRowIndexes }) => {
     const [ isVisible, setIsVisible ] = useState(false);
 
     useEffect(() => {
-        if (highlightedRowIndexes.length > 1) {
+        if (highlightedRowIndexes.length > 1 && !isVisible) {
             console.log('Activating our footer: ');
             setIsVisible(true);
         } else {
@@ -53,18 +54,20 @@ const LoggerFooter = ({ highlightedRowIndexes }) => {
                         <span className='footer__span'>Highlighted Rows: {}</span>
                     </LevelItem> */ }
                     <LevelItem className='footer__icon-group'>
-                        <Button 
-                          variant='plain'
-                          className='footer__icons'
-                          isSmall 
-                          onClick={ () => handlePrevHighlightedRow() }>
+                        <Button
+                            variant='plain'
+                            className='footer__icons'
+                            isSmall
+                            onClick={ () => handlePrevHighlightedRow() }
+                        >
                             <AngleLeftIcon />
                         </Button>
-                        <Button 
-                          variant='plain'
-                          className='footer__icons'
-                          isSmall 
-                          onClick={ () => handleNextHighlightedRow() }>
+                        <Button
+                            variant='plain'
+                            className='footer__icons'
+                            isSmall
+                            onClick={ () => handleNextHighlightedRow() }
+                        >
                             <AngleRightIcon/>
                         </Button>
                     </LevelItem>
@@ -78,6 +81,10 @@ const LoggerFooter = ({ highlightedRowIndexes }) => {
             { () => mapStateToProps() }
         </Level>
     );
+};
+
+LoggerFooter.propTypes = {
+    highlightedRowIndexes: PropTypes.array
 };
 
 export default LoggerFooter;
