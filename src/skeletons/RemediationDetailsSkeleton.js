@@ -3,130 +3,153 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import {
-    Main,
-    PageHeader, PageHeaderTitle,
-    Skeleton,
-    TableToolbar,
-    SimpleTableFilter
-} from '@redhat-cloud-services/frontend-components';
+  PageHeader,
+  PageHeaderTitle,
+} from '@redhat-cloud-services/frontend-components/PageHeader';
+import { Main } from '@redhat-cloud-services/frontend-components/Main';
+import { Skeleton } from '@redhat-cloud-services/frontend-components/Skeleton';
 
 import SkeletonTable from './SkeletonTable';
+import SkeletonTableToolbar from './SkeletonTableToolbar';
+import SkeletonTabs from './SkeletonTabs';
 
 import {
-    Flex, FlexItem,
-    Card, CardHeader, CardBody,
-    Dropdown, KebabToggle,
-    // Progress, ProgressMeasureLocation,
-    Stack, StackItem,
-    Level, LevelItem,
-    Breadcrumb, BreadcrumbItem,
-    Split, SplitItem,
-    Button,
-    ToolbarItem, ToolbarGroup,
-    Title
+  Dropdown,
+  KebabToggle,
+  Stack,
+  StackItem,
+  Level,
+  LevelItem,
+  Breadcrumb,
+  BreadcrumbItem,
+  Split,
+  SplitItem,
+  Button,
+  Flex,
+  FlexItem,
 } from '@patternfly/react-core';
-
-import { isBeta } from '../config';
+import { ChartDonutUtilization, ChartLabel } from '@patternfly/react-charts';
 
 import DescriptionList from '../components/Layouts/DescriptionList';
 
 import './RemediationDetailsSkeleton.scss';
 
 const RemediationDetailsSkeleton = () => {
-    return (
-        <React.Fragment>
-            <PageHeader className='ins-s-remediation-detail__header'>
-                <Breadcrumb>
-                    <BreadcrumbItem><Link to='/'> Remediations </Link></BreadcrumbItem>
-                    <BreadcrumbItem isActive><Skeleton size='lg'/></BreadcrumbItem>
-                </Breadcrumb>
-                <Level className="ins-c-level">
-                    <LevelItem>
-                        <PageHeaderTitle className='ins-s-page-header' title={
-                            <React.Fragment>
-                                <Skeleton size='md'/>
-                            </React.Fragment>
-                        }/>
-                    </LevelItem>
-                    <LevelItem>
-                        <Split hasGutter>
-                            <SplitItem><Button isDisabled variant='link'> Download playbook </Button></SplitItem>
-                            <SplitItem>
-                                <Dropdown
-                                    toggle={ <KebabToggle isDisabled={ true } /> }
-                                    isOpen={ false }
-                                    isPlain
-                                />
-                            </SplitItem>
-                        </Split>
-                    </LevelItem>
-                </Level>
-            </PageHeader>
-            <Main>
-                <Stack hasGutter>
-                    <StackItem>
-                        <Card>
-                            <CardHeader className='ins-m-card__header-bold'>
-                                <Title headingLevel="h4" size="xl">Playbook summary</Title>
-                            </CardHeader>
-                            <CardBody>
-                                <Flex className='ins-c-playbookSummary' direction={ { default: 'column' } }>
-                                    <Flex className='ins-c-playbookSummary__overview'>
-                                        <FlexItem spacer={ { default: 'spacer-xl' } }>
-                                            <DescriptionList
-                                                isBold
-                                                title='Total systems'
-                                                className='ins-m-flex-children'>
-                                                <Skeleton size='sm' className='ins-m-isInline-sm'/> systems
-                                            </DescriptionList>
-                                        </FlexItem>
-                                    </Flex>
-                                    <DescriptionList className='ins-c-playbookSummary__settings' title='Playbook settings'>
-                                        <Flex>
-                                            <FlexItem className='ins-m-inline-flex' spacer={ { default: 'spacer-xl' } }>
-                                                Auto reboot: <Skeleton className='ins-m-isInline-md' size='md'/>
-                                            </FlexItem>
-                                            <FlexItem className='ins-m-inline-flex'>
-                                                <Skeleton className='ins-m-isInline-sm' size='sm'/> systems require reboot
-                                            </FlexItem>
-                                        </Flex>
-                                    </DescriptionList>
-                                    <Button
-                                        isDisabled
-                                        variant='link'>
-                                        Turn <Skeleton className='ins-m-isInline' size='sm'/> auto reboot
-                                    </Button>
-                                </Flex>
-                            </CardBody>
-                        </Card>
-                    </StackItem>
-                    <StackItem>
-                        <TableToolbar className='ins-c-remediations-details-table__toolbar'>
-                            <ToolbarGroup>
-                                <ToolbarItem>
-                                    <SimpleTableFilter
-                                        buttonTitle=""
-                                        placeholder="Search Actions"
-                                        aria-label="Search Actions Loading"
-                                    />
-                                </ToolbarItem>
-                            </ToolbarGroup>
-                            {
-                                isBeta &&
-                                <ToolbarGroup>
-                                    <ToolbarItem>
-                                        <Button isDisabled={ true }> Add Action </Button>
-                                    </ToolbarItem>
-                                </ToolbarGroup>
-                            }
-                            <Skeleton size='sm' />
-                        </TableToolbar>
-                        <SkeletonTable/>
-                    </StackItem>
-                </Stack>
-            </Main>
-        </React.Fragment>
-    );
+  return (
+    <React.Fragment>
+      <PageHeader className="ins-s-remediation-detail__header">
+        <Breadcrumb>
+          <BreadcrumbItem>
+            <Link to="/"> Remediations </Link>
+          </BreadcrumbItem>
+          <BreadcrumbItem isActive>
+            <Skeleton size="lg" />
+          </BreadcrumbItem>
+        </Breadcrumb>
+        <Level className="ins-c-level">
+          <LevelItem>
+            <PageHeaderTitle
+              className="ins-s-page-header"
+              title={
+                <React.Fragment>
+                  <Skeleton size="md" />
+                </React.Fragment>
+              }
+            />
+          </LevelItem>
+          <LevelItem>
+            <Split hasGutter>
+              <SplitItem>
+                <Button isDisabled variant="link">
+                  Download playbook
+                </Button>
+              </SplitItem>
+              <SplitItem>
+                <Dropdown
+                  toggle={<KebabToggle isDisabled={true} />}
+                  isOpen={false}
+                  isPlain
+                />
+              </SplitItem>
+            </Split>
+          </LevelItem>
+        </Level>
+        <RemediationSummarySkeleton />
+      </PageHeader>
+      <Main>
+        <Stack hasGutter>
+          <StackItem className="ins-c-playbookSummary__tabs">
+            <SkeletonTabs />
+            <SkeletonTableToolbar />
+            <SkeletonTable />
+          </StackItem>
+        </Stack>
+      </Main>
+    </React.Fragment>
+  );
 };
 
 export default RemediationDetailsSkeleton;
+
+const RemediationSummarySkeleton = () => {
+  return (
+    <Split>
+      <SplitItem>
+        <ChartDonutUtilization
+          ariaDesc="Resolved issues count"
+          ariaTitle="Resolved issues chart"
+          constrainToVisibleArea={true}
+          data={{ x: 'Resolved', y: 1 }}
+          labels={({ datum }) => (datum.x ? `${datum.x}: ${datum.y}%` : null)}
+          title={'Loading'}
+          subTitle="Issues resolved"
+          subTitleComponent={<ChartLabel y={102} />}
+          thresholds={[{ value: 100, color: '#3E8635' }]}
+          height={175}
+          width={175}
+          padding={{
+            bottom: 20,
+            left: 0,
+            right: 20,
+            top: 20,
+          }}
+        />
+      </SplitItem>
+      <SplitItem className="ins-c-remediation-summary__body">
+        <Stack hasGutter>
+          <StackItem>
+            <Split>
+              <SplitItem>
+                <Flex>
+                  <FlexItem spacer={{ default: 'spacer-lg' }}>
+                    <DescriptionList title="Total systems">
+                      <Skeleton size="md" />
+                    </DescriptionList>
+                  </FlexItem>
+                </Flex>
+              </SplitItem>
+              <SplitItem>
+                <Flex>
+                  <FlexItem spacer={{ default: 'spacer-lg' }}>
+                    <DescriptionList title="Latest activity">
+                      <Skeleton size="md" />
+                    </DescriptionList>
+                  </FlexItem>
+                </Flex>
+              </SplitItem>
+            </Split>
+          </StackItem>
+          <StackItem>
+            <Flex>
+              <FlexItem spacer={{ default: 'spacer-lg' }}>
+                <DescriptionList title="Autoreboot">
+                  <Skeleton size="md" />
+                </DescriptionList>
+              </FlexItem>
+            </Flex>
+          </StackItem>
+        </Stack>
+      </SplitItem>
+    </Split>
+  );
+};
